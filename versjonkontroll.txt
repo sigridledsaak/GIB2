@@ -1,0 +1,10 @@
+Python 3.7
+HTML 5.
+CSS
+PostGIS
+PostgreSQL
+Flask
+JS
+SQLAlchemy
+GeoAlchemy
+GIT
