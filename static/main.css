@@ -78,6 +78,7 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
-#mapid {
-  height: 180px;
+#map {
+  width: 600px;
+  height: 100%;
 }
