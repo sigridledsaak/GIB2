@@ -4,14 +4,24 @@ app = Flask(__name__)
 
 events = [
     {
-        'name': 'SLAM POESI',
-        'place': 'Litteraturhuset',
-        'description': 'sykt opplegg'
+        'ID': '1',
+        'Title': 'Slam Poesi',
+        'Description': 'Total Hodemist',
+        'startDate': '29.03.19',
+        'startTime': '18:00',
+        'endDate': '29.03.19',
+        'venueName': 'Litteraturhuset',
+        'venueCoordinates': '63.4, 10.4'
     },
     {
-        'name': 'HalvingFest',
-        'place': 'NardoKlubbhus',
-        'description': 'Var gøy'
+        'ID': '2',
+        'Title': 'Halvingfest',
+        'Description': 'Total Hodemist',
+        'startDate': '02.02.19',
+        'startTime': '18:00',
+        'endDate': '02.02.19',
+        'venueName': 'Litteraturhuset',
+        'venueCoordinates': '63.4, 10.4'
     }
 ]
 
@@ -25,6 +35,9 @@ def home():
 def about():
     return render_template('about.html', title ='About')
 
+@app.route('/register')
+def register():
+    return render_template('register.html',title='Register Event')
 
 if __name__ == '__main__':
     app.run(debug=True)

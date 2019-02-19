@@ -1,0 +1,47 @@
+<!-- https://codepen.io/atakan/pen/gqbIz -->
+{% extends "layout.html" %}
+{% block content %}
+    <script type="text/javascript" src ='static/reg.js'></script>
+    <h1>Register Event</h1>
+    <p>Get started on registering your own events!</p>
+      <!-- multistep form -->
+    <form id="msform">
+      <!-- progressbar -->
+      <ul id="progressbar">
+        <li class="active">General Information</li>
+        <li>When</li>
+        <li>Additional Information</li>
+      </ul>
+      <!-- fieldsets -->
+      <fieldset>
+        <h2 class="fs-title">Register your event</h2>
+        <h3 class="fs-subtitle">General Information</h3>
+        <input type="text" name="title" placeholder="Title" />
+        <input type="text" name="description" placeholder="Description" />
+        <input type="text" name="venueName" placeholder="Venue Name" />
+        <textarea name="venueAddress" placeholder="Address"></textarea>
+        <input type="text" name="venueCoordinates" placeholder="Venue Coordinates" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+      <fieldset>
+        <h2 class="fs-title">Time Details</h2>
+        <h3 class="fs-subtitle">Details regarding when the events is happening</h3>
+        <input type="date" name="startDate" placeholder="Start Date" />
+        <input type="time" name="startTime" placeholder="Start Time" />
+        <input type="date" name="endDate" placeholder="End Time" />
+        <input type="text" name="repetetiveEvent" placeholder="Does the event repeat?">
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="button" name="next" class="next action-button" value="Next" />
+      </fieldset>
+      <fieldset>
+        <h2 class="fs-title">Additional Information</h2>
+        <input type="text" name="categories" placeholder="Categories" />
+        <input type="number" name="ageLimit" placeholder="Age Limit" />
+        <input type="number" name="ticketPrize" placeholder="Ticket Price" />
+        <input type="text" name="organizerWebsite" placeholder="Event website" />
+        <input type="button" name="previous" class="previous action-button" value="Previous" />
+        <input type="submit" name="submit" class="submit action-button" value="Submit" />
+      </fieldset>
+    </form>
+    <p>En gang i fremtiden kommer denne nettsiden til å være verdt 1 000 000 000 kr. - Sitat Mons</p>
+{% endblock content %}
