@@ -10,3 +10,12 @@ pip install -r requirements.txt
 
 for å aktivere venv.
 ```source venv/bin/activate ``` 
+
+for å starte server, installer postgresql med følgende verdier
+``` 
+user = postgres
+password = password
+databasename = postgres
+port = 5432
+host = localhost
+```

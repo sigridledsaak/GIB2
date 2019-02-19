@@ -1,28 +1,25 @@
-#this file contais logic to create and manipulate db objects
-from flask_sqlalchemy import SQLAlchemy
-import datetime
+from GIB2 import db
 
-db = SQLAlchemy()
 
-class BaseModel(db.Model):
-    """Base data model for all objects"""
-    __abstract__ = True
+class exempleEvent(db.Model):
+    __tablename__ = 'exEvent'
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+    desc = db.Column(db.String())
+
+
+    def __init__(self, name, desc, published):
+        self.name = name
+        self.desc = desc
+
 
     def __repr__(self):
-        """Define a base way to print models"""
-        return '%s(%s)' % (self.__class__.__name__, {
-            column: value
-            for column, value in self._to_dict().items()
-        })
+        return '<id {}>'.format(self.id)
 
-    def json(self):
-        """
-                Define a base way to jsonify models, dealing with datetime objects
-        """
+    def serialize(self):
         return {
-            column: value if not isinstance(value, datetime.date) else value.strftime('%Y-%m-%d')
-            for column, value in self._to_dict().items()
-            }
+            'id': self.id,
+            'name': self.name,
+            'desc': self.desc
+        }
