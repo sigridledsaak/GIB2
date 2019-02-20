@@ -1,7 +1,9 @@
 <!-- https://codepen.io/atakan/pen/gqbIz -->
 {% extends "layout.html" %}
 {% block content %}
-    <script type="text/javascript" src ='static/reg.js'></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='reg.js') }}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <h1>Register Event</h1>
     <p>Get started on registering your own events!</p>
       <!-- multistep form -->
@@ -43,5 +45,4 @@
         <input type="submit" name="submit" class="submit action-button" value="Submit" />
       </fieldset>
     </form>
-    <p>En gang i fremtiden kommer denne nettsiden til å være verdt 1 000 000 000 kr. - Sitat Mons</p>
 {% endblock content %}
