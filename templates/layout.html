@@ -44,24 +44,7 @@
       </nav>
     </header>
     <main role="main" class="container">
-      <div class="row">
-          <div class="col-md-4">
-              <div class="content-section">
-                <h3>Sort by</h3>
-                <p class='text-muted'>Filter events by age limitations, date, etc.
-                  <ul class="list-group">
-                    <li class="list-group-item list-group-item-light">Latest Events</li>
-                    <li class="list-group-item list-group-item-light">Map</li>
-                    <li class="list-group-item list-group-item-light">Calendars</li>
-                    <li class="list-group-item list-group-item-light">Age</li>
-                  </ul>
-                </p>
-              </div>
-          </div>
-        <div class="col-md-8">
-          {% block content %}{% endblock %}
-        </div>
-      </div>
+      {% block content %}{% endblock %}
     </main>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
