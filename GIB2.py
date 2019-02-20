@@ -21,7 +21,7 @@ events = [
         'startTime': '18:00',
         'endDate': '02.02.19',
         'venueName': 'Litteraturhuset',
-        'venueCoordinates': '63.4, 10.4'
+        'venueCoordinates': '63.4, 10.3'
     }
 ]
 
