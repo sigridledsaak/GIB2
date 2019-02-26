@@ -1,7 +1,7 @@
-from app import app
+import GIB2
 from flask import render_template
 
-@app.route('/')
-@app.route('/index')
+@GIB2.route('/')
+@GIB2.route('/index')
 def index():
     return "Hello, World!"

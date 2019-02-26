@@ -1,35 +1,37 @@
 from flask import Flask, render_template, url_for
+from flask import Flask, request
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
+from flask_dotenv import DotEnv
+import os
+from geoalchemy2.types import Geography
 
 app = Flask(__name__)
+#app.config.from_object(Config[Config.init_app()])
 
-events = [
-    {
-        'ID': '1',
-        'Title': 'Slam Poesi',
-        'Description': 'Total Hodemist',
-        'startDate': '29.03.19',
-        'startTime': '18:00',
-        'endDate': '29.03.19',
-        'venueName': 'Litteraturhuset',
-        'venueCoordinates': '63.4, 10.4'
-    },
-    {
-        'ID': '2',
-        'Title': 'Halvingfest',
-        'Description': 'Total Hodemist',
-        'startDate': '02.02.19',
-        'startTime': '18:00',
-        'endDate': '02.02.19',
-        'venueName': 'Litteraturhuset',
-        'venueCoordinates': '63.4, 10.3'
-    }
-]
+POSTGRES = {
+    'user': 'postgres',
+    'pw': 'password',
+    'db': 'postgres',
+    'host': 'localhost',
+    'port': '5432',
+}
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/postgres'#'postgresql://%(user)s:\
+#%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+
+#db.init_app(app)
+
+app.config.from_pyfile('config.py')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+from models import *
 
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', events=events)
+    return render_template('home.html')
 
 @app.route('/about')
 def about():
