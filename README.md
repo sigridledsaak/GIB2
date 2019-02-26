@@ -22,11 +22,16 @@ port = 5432
 host = localhost
 ```
 Installer postgis extension til postgresql server
+når installert, gå til serveren, høyreklikk og velg query tools og kjør
+````
+create extension postgis;
+````
 
 set System variables
 ``` 
 APP_SETTINGS="config.DevelopmentConfig"
 DATABASE_URL="postgresql://localhost/beacons"
+
 ```
 Hvordan jobbe med dette inntil videre for Mons, Jakob og Sigrid:
 ```
