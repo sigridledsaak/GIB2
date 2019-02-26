@@ -1,4 +1,6 @@
 # GIB2
+Denne applikasjonen setter opp et kart for arrangement i Trondheim
+
 Lag et python virtuelt miljø (virtualenv), med navn venv og plassert i prosjektmappen.
 
 Naviger til prosjektmappen og kjør
@@ -19,7 +21,13 @@ databasename = postgres
 port = 5432
 host = localhost
 ```
+Installer postgis extension til postgresql server
 
+set System variables
+``` 
+APP_SETTINGS="config.DevelopmentConfig"
+DATABASE_URL="postgresql://localhost/beacons"
+```
 Hvordan jobbe med dette inntil videre for Mons, Jakob og Sigrid:
 ```
 git checkout frontMons

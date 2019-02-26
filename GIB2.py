@@ -1,9 +1,12 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from flask_dotenv import DotEnv
 import os
+from geoalchemy2.types import Geography
 
 app = Flask(__name__)
+#app.config.from_object(Config[Config.init_app()])
 
 POSTGRES = {
     'user': 'postgres',
