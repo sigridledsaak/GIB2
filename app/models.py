@@ -1,4 +1,4 @@
-from GIB2 import db
+from app import db
 from geoalchemy2.types import Geography
 
 
