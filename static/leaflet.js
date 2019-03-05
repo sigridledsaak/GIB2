@@ -10,14 +10,31 @@ function setMap(){
         accessToken: 'pk.eyJ1IjoibW9uc2VtIiwiYSI6ImNqczVzdGdmbTAwY24zeW9hMjJtYjk0YnIifQ.ddvzRzPgfKeLtF9RrFuZOg'
     }).addTo(map);
 
-    utested1 = L.marker([63.4224338, 10.3957807]).addTo(map);
-
-    utested1.bindPopup("StudenterSamfundet");
-    utested1.on('mouseover',function(ev) {
-        ev.target.openPopup();
-        utested1.on('mouseout', function (e) {e.target.closePopup();
-        });
-    })
+    //Calling the function here, but missing eventlist per now.
+    // addMarkers(map, eventlist)
 
 }
 window.onload = setMap();
+
+
+
+
+// var myEvent = {Title:"Tittel", venueCoordinates:[63.4224338, 10.3957807]}
+//     var currentEvent = L.marker(myEvent.venueCoordinates).addTo(map);
+
+
+
+//Function that adds markers to map.
+//Also needs a array with events
+function addMarkers(map, eventlist) {
+    for (event in eventlist)
+        var currentMarker = L.marker(event.venueCoordinates).addTo(map);
+        currentMarker.bindPopup(event.Title +""); //Ikke sikker på om nødvendig med +""
+        currentMarker.on('mouseover', function (ev) {
+             ev.target.openPopup();
+             currentMarker.on('mouseout', function (e) {
+                 e.target.closePopup();
+
+             })
+
+         })}
