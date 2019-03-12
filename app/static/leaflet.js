@@ -38,6 +38,11 @@ var coursepin=new Icon({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-lo
 var bookpin = new Icon({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-09-512.png'});
 var outdoorpin=new Icon({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-27-256.png'});
 var exhitionpin=new Icon({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-13-512.png'});
+var technologypin = new Icon ({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-23-512.png'});
+var foodpin = new Icon ({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-19-256.png'});
+var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[50, 70]});
+
+
 
 
 
@@ -52,7 +57,7 @@ function getPosition(){
                     " Longitude: " + pos.coords.longitude);
                     if (clickcount==0){
                         marker.setLatLng([pos.coords.latitude, pos.coords.longitude]);
-                        marker.setIcon(starpin);
+                        marker.setIcon(sportpin);
                         map.setView([pos.coords.latitude, pos.coords.longitude], 13, {animation: true});
                         marker.bindPopup("<strong> Din posisjon!</strong>").addTo(map);
                         //circle = makeRadius([pos.coords.latitude, pos.coords.longitude],500);
@@ -124,6 +129,8 @@ function addMarkers(map, eventlist) {
             case 'Literature' : icon = bookpin;
             case 'Outdoor' : icon = outdoorpin;
             case 'Exhibition':icon = exhitionpin;
+            case 'Technology':icon=technologypin;
+            case 'Food':icon = foodpin;
         }
         var currentMarker = L.marker(event.venueCoordinates).addTo(map);
         currentMarker.setIcon(icon);
