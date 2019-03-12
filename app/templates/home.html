@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+    <script src='static/leaflet.js'></script>
     <div class="row">
           <div class="col-md-4">
               <div class="content-section">
@@ -25,6 +26,10 @@
                     <br>
                     <input class="action-button" type="submit" name="submit" placeholder="Show matching events">
                 </form>
+                <ul>
+                    <button id ="pos">Get Location</button>
+                    <button id ="markpos">Mark Position On Map</button>
+                </ul>
               </div>
           </div>
         <div class="col-md-8">
