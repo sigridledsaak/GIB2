@@ -1,14 +1,36 @@
 from flask import render_template
 from app import app
+from app.models import Event, db
+from geoalchemy2 import Geography
+import psycopg2
+from ppygis3 import Point
+
 
 @app.route('/index')
 def index():
     return "Hello, World!"
 
-
 @app.route('/')
 @app.route('/home')
 def home():
+
+
+    testEvent = Event(titel='firstEvent', startTime='00:00:00.0000000', beskrivelse='dette er det første eventet',startDate='0001-01-01' ,ageLimit=20, endDate='0001-01-01',
+                      isRepetition=False, venueName='Samf', venueCoordinates ='INSERT INTO Event.venueCoordinates() VALUES (Point(42.555, 32.222))', venueAddress='gate', venueID=0,
+                      organizerID=0, organizerName=0, organizerWebsite='hei.no', regularTicketPrize=200,
+                      reducedTicketPrize=100, category_id=0, category_name='fest', pictureURL=0, ticketsURL=0,
+                      moreInfoURL=0, facebookURL=0, videosURL=0)
+
+    db.session().add(testEvent)
+    db.session().commit()
+    events = Event.query.all()
+    print(events)
+
+
+
+
+
+
     return render_template('home.html')
 
 @app.route('/about')

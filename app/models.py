@@ -2,7 +2,7 @@ from app import db
 from geoalchemy2.types import Geography
 
 
-class exempleEvent(db.Model):
+class Event(db.Model):
     __tablename__ = 'Event'
 
     ID = db.Column(db.Integer, primary_key=True)
