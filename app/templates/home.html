@@ -3,22 +3,27 @@
     <div class="row">
           <div class="col-md-4">
               <div class="content-section">
-                <h3>Show events</h3>
-                <form name="userInput" method="POST">
-                    <p>From</p>
-                    <input type="date" name="startDate" placeholder="Start Date" />
-                    <p>To</p>
-                    <input type="date" name="endDate" placeholder="End Date" />
-                    <p>Select Categories</p>
-                    <input type="checkbox" name="sports" />Sports<br>
-                    <input type="checkbox" name="concert" />Concert<br>
-                    <input type="checkbox" name="museum" />Museum<br>
-                    <input type="checkbox" name="theatre" />Theatre
-                    <p></p>
-                    <input type="number" name="ageLimit" placeholder="Age Limit" />
-                    <input type="number" name="ticketPrize" placeholder="Ticket Price" />
-                    <input type="number" name="distance" placeholder="Max distance from your location">
-                    <input type="submit" name="submit" placeholder="Show matching events">
+                <h3>Filter events</h3>
+                <form name="userInput" method="GET">
+                    <h6>From</h6>
+                    <input class="event-textinput" type="date" name="startDate" placeholder="Start Date" />
+                    <h6>To</h6>
+                    <input class="event-textinput" type="date" name="endDate" placeholder="End Date" />
+                    <h6>Select Categories</h6>
+                    <select class="event-textinput" type="text" name="category" multiple>
+                        <option type="checkbox" value="sports" />Sports</option>
+                        <option type="checkbox" value="concert" />Concert</option>
+                        <option type="checkbox" value="museum" />Museum</option>
+                        <option type="checkbox" value="theatre" />Theatre</option>
+                    </select>
+                    <h6>Minimum Age Limit</h6>
+                    <input class="event-textinput" type="number" name="ageLimit" placeholder="Age Limit" />
+                    <h6>Maximum Price</h6>
+                    <input class="event-textinput" type="number" name="ticketPrize" placeholder="Ticket Price" />
+                    <h6>Maximum distance (meters)</h6>
+                    <input class="event-textinput" type="number" name="distance" placeholder="Max distance from your location">
+                    <br>
+                    <input class="action-button" type="submit" name="submit" placeholder="Show matching events">
                 </form>
               </div>
           </div>
