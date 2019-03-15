@@ -1,6 +1,6 @@
-from geoalchemy2.types import Geography
+from app import db
 
-from GIB2 import db
+from geoalchemy2.types import Geography
 
 
 class Event(db.Model):
@@ -31,7 +31,8 @@ class Event(db.Model):
     facebookEventUrl = db.Column(db.String)
     videoUrl = db.Column(db.String)
 
-    def __init__(self, FID, title, link, description, startdate, enddate,
+
+    def __init__(self, FID, title, description, startdate, enddate,
                  isRepetition, venueName, venueCoordinates, venueAddress,
                  venueId, organizer,
                  organizerName, organizerWebsite, ageRestriction, regularPrize, reducedPrize, category_id,
@@ -70,7 +71,6 @@ class Event(db.Model):
             'title': self.title,
             'description': self.description,
             'startdate': self.startdate,
-            'startTime': self.startTime,
             'enddate': self.enddate,
             'isRepetition': self.isRepetition,
             'venueName': self.venueName,

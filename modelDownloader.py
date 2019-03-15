@@ -1,14 +1,11 @@
 import os
-import xml.etree.ElementTree as ET
-from xml.sax.saxutils import escape, unescape
 import re
-from bs4 import BeautifulSoup
+import xml.etree.ElementTree as ET
 
 import requests
 
-from GIB2 import db
-from models import Event
-from ppygis3 import Point
+from app import db
+from app.models import Event
 
 
 # loading n amount of pages
@@ -24,12 +21,12 @@ def loadRSS(n, m):
 
         # saving the xml file
         with open('topeventfeed/' + str(x) + '.xml', 'wb') as f:
-            a=(str(resp.content.decode("utf-8")))
+            a = (str(resp.content.decode("utf-8")))
 
             regex = re.compile(r"&(?!amp;|lt;|gt;)")
             a = regex.sub("&amp;", a)
 
-            f.write(bytes(a,'utf-8'))
+            f.write(bytes(a, 'utf-8'))
             print("skrevet til fil")
 
 
@@ -48,7 +45,7 @@ def parseXML(xmlfile):
     for item in root.findall('./channel/item'):
 
         event = Event(
-            FID=None, title=None, link=None, description=None, startdate=None, enddate=None, isRepetition=None,
+            FID=None, title=None, description=None, startdate=None, enddate=None, isRepetition=None,
             venueName=None, venueAddress=None,
             venueId=None, venueCoordinates=None, organizer=None, organizerName=None, organizerWebsite=None,
             ageRestriction=None,
@@ -83,7 +80,7 @@ def parseXML(xmlfile):
             if f[0] == 'id':
                 event.FID = f[1]
             if f[0] == 'description':
-                event.description=f[1]
+                event.description = f[1]
             if f[0] == 'isRecurrent':
                 if f[1] == 'no':
                     event.isRepetition = False
@@ -125,7 +122,7 @@ def parseXML(xmlfile):
                 event.reducedPrice = f[1]
             if f[0] == 'ageRestriction':
                 if f[1] == '':
-                    event.ageRestriction=None
+                    event.ageRestriction = None
                 else:
                     event.ageRestriction = f[1]
             if f[0] == 'videoUrl':
@@ -190,10 +187,6 @@ def main(n, m):
 
         else:
             continue
-
-
-
-
 
 
 if __name__ == "__main__":
