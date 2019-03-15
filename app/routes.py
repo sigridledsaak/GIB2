@@ -1,6 +1,7 @@
 from flask import render_template
 from app import app
 from .models import Event
+import requests
 
 @app.route('/index')
 def index():
@@ -19,3 +20,4 @@ def about():
 @app.route('/register')
 def register():
     return render_template('register.html',title='Register Event')
+
