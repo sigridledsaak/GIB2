@@ -41,13 +41,32 @@ var exhitionpin=new Icon({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-lo
 var technologypin = new Icon ({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-23-512.png'});
 var foodpin = new Icon ({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-19-256.png'});
 var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[50, 70]});
+var personpin=new Icon({iconUrl:'https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-5/128/map-location-person-512.png', iconSize : [40,30]});
 
 
+function getCurrPosition(){
+    if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                //You have your location here
+                console.log("Latitude: " + pos.coords.latitude +
+                    " Longitude: " + pos.coords.longitude);
+                marker.setLatLng([pos.coords.latitude, pos.coords.longitude]);
+                marker.setIcon(personpin);
+                map.setView([pos.coords.latitude, pos.coords.longitude], 13, {animation: true});
+                marker.bindPopup("<strong> Din posisjon!</strong>").addTo(map);
+                //circle = makeRadius([pos.coords.latitude, pos.coords.longitude],500);
+                //circle.addTo(map);
+                var output = document.getElementById('pos');
+                output.value = String(pos.coords.latitude+ ","+pos.coords.longitude);
+            });
+    }else {
+        console.log("Geolocation is not supported by this browser.");
+    }
 
-
+}
 
 //Lager maker i brukers posisjon
-pos= document.getElementById("pos");
+/*pos= document.getElementById("pos");
 pos.addEventListener("click",getPosition);
 function getPosition(){
     if (navigator.geolocation) {
@@ -55,25 +74,34 @@ function getPosition(){
                 //You have your location here
                 console.log("Latitude: " + pos.coords.latitude +
                     " Longitude: " + pos.coords.longitude);
-                    if (clickcount==0){
-                        marker.setLatLng([pos.coords.latitude, pos.coords.longitude]);
-                        marker.setIcon(sportpin);
-                        map.setView([pos.coords.latitude, pos.coords.longitude], 13, {animation: true});
-                        marker.bindPopup("<strong> Din posisjon!</strong>").addTo(map);
-                        //circle = makeRadius([pos.coords.latitude, pos.coords.longitude],500);
-                        //circle.addTo(map);
-                        clickcount++;
-                        console.log(clickcount);
-                        }
-                    else {
-                        map.removeLayer(marker);
-                        //map.removeLayer(circle);
-                        clickcount=0;
-                    }
+                marker.setLatLng([pos.coords.latitude, pos.coords.longitude]);
+                marker.setIcon(personpin);
+                map.setView([pos.coords.latitude, pos.coords.longitude], 13, {animation: true});
+                marker.bindPopup("<strong> Din posisjon!</strong>").addTo(map);
+                //circle = makeRadius([pos.coords.latitude, pos.coords.longitude],500);
+                //circle.addTo(map);
+                clickcount++;
+                console.log(clickcount);
             });
     }else {
         console.log("Geolocation is not supported by this browser.");
     }
+}
+*/
+
+function getMarkPosition(){
+    map.on('click', function (e) {
+        pos=e.latlng;
+        console.log(pos);
+        marker.setLatLng(e.latlng).addTo(map);
+        marker.setIcon(starpin);
+        marker.bindPopup("<strong>" + e.latlng + "</strong>").addTo(map);
+        //circle = makeRadius(e.latlng, 500);
+        //circle.addTo(map);
+        marker.on('dragend', markerDrag=false);
+        var output = document.getElementById('markpos');
+        output.value = String(pos.lat+ ","+pos.lng);
+    });
 }
 
 
@@ -82,21 +110,12 @@ markpos= document.getElementById("markpos");
 markpos.addEventListener("click",markPosition);
 function markPosition() {
     map.on('click', function (e) {
-        if (clickcount == 0) {
-            marker.setLatLng(e.latlng).addTo(map);
-            marker.setIcon(starpin);
-            marker.bindPopup("<strong>" + e.latlng + "</strong>").addTo(map);
-            //circle = makeRadius(e.latlng, 500);
-            //circle.addTo(map);
-
-            marker.on('dragend', markerDrag=false);
-            clickcount++;
-        }
-        else{
-            map.removeLayer(marker);
-            //map.removeLayer(circle);
-            clickcount = 0;
-        }
+        marker.setLatLng(e.latlng).addTo(map);
+        marker.setIcon(starpin);
+        marker.bindPopup("<strong>" + e.latlng + "</strong>").addTo(map);
+        //circle = makeRadius(e.latlng, 500);
+        //circle.addTo(map);
+        marker.on('dragend', markerDrag=false);
     });
 }
 
@@ -131,6 +150,7 @@ function addMarkers(map, eventlist) {
             case 'Exhibition':icon = exhitionpin;
             case 'Technology':icon=technologypin;
             case 'Food':icon = foodpin;
+            case 'Sport':icon =sportpin;
         }
         var currentMarker = L.marker(event.venueCoordinates).addTo(map);
         currentMarker.setIcon(icon);
