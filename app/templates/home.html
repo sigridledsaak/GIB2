@@ -4,12 +4,10 @@
     <div class="row">
           <div class="col-md-4">
               <div class="content-section">
-                <h3>Filter events</h3>
-                <form name="userInput" method="GET">
-                    <h6>From</h6>
-                    <input class="event-textinput" type="date" name="startDate" placeholder="Start Date" />
-                    <h6>To</h6>
-                    <input class="event-textinput" type="date" name="endDate" placeholder="End Date" />
+                <h3>Show events</h3>
+                <form name="userInput" method="post" action="{{ url_for('home') }}">
+                    <h6>On Date (required)</h6>
+                    <input class="event-textinput" type="date" name="date" placeholder="On Date" />
                     <h6>Select Categories</h6>
                     <select class="event-textinput" type="text" name="category" multiple>
                         <option type="checkbox" value="sports" />Sports</option>

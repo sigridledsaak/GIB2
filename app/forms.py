@@ -7,3 +7,5 @@ class EventForm(FlaskForm):
     title = StringField('tittel', validators=[DataRequired()])
     description = StringField('description')
     startDate = DateField('startDate')
+
+

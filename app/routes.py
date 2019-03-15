@@ -1,7 +1,6 @@
-from flask import render_template
+from flask import render_template, request
 from app import app
 from .models import Event
-import requests
 
 @app.route('/index')
 def index():
@@ -9,9 +8,27 @@ def index():
 
 
 @app.route('/')
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def home():
+    date = request.form.get('date')
+    category = request.form.get('category')
+    ageLimit = request.form.get('ageLimit')
+    distance = request.form.get('distance')
+    events = Event.query.filter_by(startDate='date')
+    print(date)
+
+    #if ageLimit:
+        #events = events.remove(Event.query.filter_by(ageLimit='ageLimit').all())
+    #if category:
+        #events = events.remove(Event.query.filter_by(category='category').all())
+
     return render_template('home.html')
+
+#@app.route('/home/search', methods=['GET', 'POST'])
+#def searchEvents():
+
+
+
 
 @app.route('/about')
 def about():
