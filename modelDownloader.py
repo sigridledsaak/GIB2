@@ -1,5 +1,8 @@
 import os
 import xml.etree.ElementTree as ET
+from xml.sax.saxutils import escape, unescape
+import re
+from bs4 import BeautifulSoup
 
 import requests
 
@@ -21,13 +24,19 @@ def loadRSS(n, m):
 
         # saving the xml file
         with open('topeventfeed/' + str(x) + '.xml', 'wb') as f:
-            f.write(resp.content)
+            a=(str(resp.content.decode("utf-8")))
+
+            regex = re.compile(r"&(?!amp;|lt;|gt;)")
+            a = regex.sub("&amp;", a)
+
+            f.write(bytes(a,'utf-8'))
             print("skrevet til fil")
 
 
 def parseXML(xmlfile):
     # create element tree object
-    tree = ET.parse(xmlfile)
+
+    tree = ET.parse(xmlfile, ET.XMLParser(encoding="utf-8"))
 
     # get root element
     root = tree.getroot()
@@ -82,7 +91,7 @@ def parseXML(xmlfile):
                     event.isRepetition = True
             if f[0] == 'startdate':
                 event.startdate = f[1]
-            if f[0] == ' enddate':
+            if f[0] == 'enddate':
                 event.enddate = f[1]
             if f[0] == 'categoryID':
                 event.category_id = f[1]
@@ -137,7 +146,7 @@ def get_last_object_with_fid():
     return db.session.query(Event).order_by(Event.FID.desc()).first()
 
 
-def main(n, m, continuation_bool):
+def main(n, m):
     # load rss from web to update existing xml file
     loadRSS(n, m)
 
@@ -169,6 +178,9 @@ def main(n, m, continuation_bool):
 
                     else:
                         print('Object already exist!', event.FID)
+                        for filename in os.listdir(directory):
+                            if filename.endswith(bytes('.xml', 'utf-8')):
+                                os.remove(os.path.join(directory, filename))
                         return
 
                 print(event.FID)
@@ -182,6 +194,8 @@ def main(n, m, continuation_bool):
 
 
 
+
+
 if __name__ == "__main__":
     # calling main function
-    main(1, 5, False)
+    main(1, 10)
