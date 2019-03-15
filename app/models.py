@@ -2,12 +2,12 @@ from app import db
 from geoalchemy2.types import Geography
 
 
-class exempleEvent(db.Model):
+class Event(db.Model):
     __tablename__ = 'Event'
 
     ID = db.Column(db.Integer, primary_key=True)
-    titel = db.Column(db.String)
-    beskrivelse = db.Column(db.String)
+    title = db.Column(db.String)
+    description = db.Column(db.String)
     startDate = db.Column(db.DATE)
     startTime = db.Column(db.TIME)
     endDate = db.Column(db.DATE)
@@ -32,14 +32,14 @@ class exempleEvent(db.Model):
     videosURL = db.Column(db.String)
 
 
-    def __init__(self, titel, beskrivelse, startDate, startTime, endDate,
+    def __init__(self, title, description, startDate, startTime, endDate,
                  isRepetition, venueName, venueCoordinates, venueAddress,
                  venueID, organizerID, organizerName, organizerWebsite,
                  ageLimit, regularTicketPrize, reducedTicketPrize, category_id,
                  category_name, pictureURL, ticketsURL, moreInfoURL, facebookURL, videosURL):
 
-        self.titel = titel
-        self.beskrivelse = beskrivelse
+        self.title = title
+        self.description = description
         self.startDate = startDate
         self.startTime = startTime
         self.endDate = endDate
@@ -69,8 +69,8 @@ class exempleEvent(db.Model):
     def serialize(self):
         return {
             'ID': self.ID,
-            'titel': self.titel,
-            'beskrivelse': self.beskrivelse,
+            'title': self.title,
+            'description': self.description,
             'startDate': self.startDate,
             'startTime': self.startTime,
             'endDate': self.endDate,

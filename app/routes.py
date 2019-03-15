@@ -1,5 +1,6 @@
 from flask import render_template
 from app import app
+from .models import Event
 
 @app.route('/index')
 def index():
