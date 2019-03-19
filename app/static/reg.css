@@ -3,15 +3,16 @@
 
 /*basic reset*/
 * {margin: 0; padding: 0;}
-
+/*
 html {
 	height: 100%;
 	/*Image only BG fallback*/
 
 	/*background = gradient + image pattern combo*/
-	background:
-		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
-}
+/*	background:
+/*		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
+/*}*/
+
 
 body {
 	font-family: montserrat, arial, verdana;
@@ -55,7 +56,7 @@ body {
 /*buttons*/
 #msform .action-button {
 	width: 100px;
-	background: #27AE60;
+	background: #5f788a;
 	font-weight: bold;
 	color: white;
 	border: 0 none;
@@ -65,7 +66,7 @@ body {
 	margin: 10px 5px;
 }
 #msform .action-button:hover, #msform .action-button:focus {
-	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #5f788a;
 }
 /*headings*/
 .fs-title {
@@ -89,7 +90,7 @@ body {
 }
 #progressbar li {
 	list-style-type: none;
-	color: white;
+	color: #5f788a;
 	text-transform: uppercase;
 	font-size: 9px;
 	width: 33.33%;
@@ -103,7 +104,7 @@ body {
 	line-height: 20px;
 	display: block;
 	font-size: 10px;
-	color: #333;
+	color: #5f788a;
 	background: white;
 	border-radius: 3px;
 	margin: 0 auto 5px auto;
@@ -126,6 +127,6 @@ body {
 /*marking active/completed steps green*/
 /*The number of the step and the connector before it = green*/
 #progressbar li.active:before,  #progressbar li.active:after{
-	background: #27AE60;
+	background: #5f788a;
 	color: white;
 }

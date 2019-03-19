@@ -1,11 +1,13 @@
 <!-- https://codepen.io/atakan/pen/gqbIz -->
 {% extends "layout.html" %}
 {% block content %}
-    <script type="text/javascript" src ='static/reg.js'></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='reg.js') }}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <h1>Register Event</h1>
     <p>Get started on registering your own events!</p>
       <!-- multistep form -->
-    <form id="msform">
+    <form id="msform" method="POST">
       <!-- progressbar -->
       <ul id="progressbar">
         <li class="active">General Information</li>
@@ -43,5 +45,26 @@
         <input type="submit" name="submit" class="submit action-button" value="Submit" />
       </fieldset>
     </form>
-    <p>En gang i fremtiden kommer denne nettsiden til å være verdt 1 000 000 000 kr. - Sitat Mons</p>
 {% endblock content %}
+
+
+<!--
+ FROM ADRESS TO COORDINATES
+
+function getLatitudeLongitude(callback, address) {
+    // If adress is not supplied, use default value 'Ferrol, Galicia, Spain'
+    address = address || 'Ferrol, Galicia, Spain';
+    // Initialize the Geocoder
+    geocoder = new google.maps.Geocoder();
+    if (geocoder) {
+        geocoder.geocode({
+            'address': address
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                callback(results[0]);
+            }
+        });
+    }
+}
+
+ -->
