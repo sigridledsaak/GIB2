@@ -36,7 +36,9 @@
       </fieldset>
       <fieldset>
         <h2 class="fs-title">Additional Information</h2>
-        <input type="text" name="categories" placeholder="Categories" />
+        {% for category in categories %}
+        <input type="checkbox" name="{{ category }}"/>{{ category }}<br>
+        {% endfor %}
         <input type="number" name="ageLimit" placeholder="Age Limit" />
         <input type="number" name="ticketPrize" placeholder="Ticket Price" />
         <input type="text" name="organizerWebsite" placeholder="Event website" />

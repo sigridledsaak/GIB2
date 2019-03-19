@@ -7,6 +7,7 @@ def index():
     return "Hello, World!"
 
 
+
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -14,7 +15,7 @@ def home():
     category = request.form.get('category')
     ageLimit = request.form.get('ageLimit')
     distance = request.form.get('distance')
-    events = Event.query.filter_by(startDate='date')
+    events = Event.query.filter_by(startdate='date')
     print(date)
 
     #if ageLimit:
@@ -22,7 +23,7 @@ def home():
     #if category:
         #events = events.remove(Event.query.filter_by(category='category').all())
 
-    return render_template('home.html')
+    return render_template('home.html', categories= Event.CATEGORY_CHOICES)
 
 #@app.route('/home/search', methods=['GET', 'POST'])
 #def searchEvents():
@@ -36,5 +37,5 @@ def about():
 
 @app.route('/register')
 def register():
-    return render_template('register.html',title='Register Event')
+    return render_template('register.html', categories=Event.CATEGORY_CHOICES, title="Register Event")
 
