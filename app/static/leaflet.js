@@ -1,3 +1,5 @@
+
+
 function setMap(){
     console.log("Loading map");
 
@@ -24,8 +26,7 @@ var Icon = L.Icon.extend({
     options: {
         iconUrl: 'https://cdn2.iconfinder.com/data/icons/location-map-simplicity/512/theatre-512.png',
         iconSize:     [30, 50],
-        iconAnchor:   [15, 49],
-        popupAnchor:  [-3, -76]
+        iconAnchor:   [15, 49]
     }
 });
 //bruk disse markerene så får me alle i samme størrelse og format.
@@ -41,7 +42,8 @@ var exhitionpin=new Icon({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-lo
 var technologypin = new Icon ({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-23-512.png'});
 var foodpin = new Icon ({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-19-256.png'});
 var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[50, 70]});
-var personpin=new Icon({iconUrl:'https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-5/128/map-location-person-512.png', iconSize : [40,30]});
+var personpin=new Icon({iconUrl:'https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-5/128/map-location-person-512.png', iconSize : [50,40]});
+var moviepin = new Icon({iconUrl: 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-02-512.png'});
 
 
 function getCurrPosition(){
@@ -95,7 +97,7 @@ function getMarkPosition(){
         console.log(pos);
         marker.setLatLng(e.latlng).addTo(map);
         marker.setIcon(starpin);
-        marker.bindPopup("<strong>" + e.latlng + "</strong>").addTo(map);
+        marker.bindPopup("<strong>Marked position!'</strong>").addTo(map);
         //circle = makeRadius(e.latlng, 500);
         //circle.addTo(map);
         marker.on('dragend', markerDrag=false);
@@ -132,25 +134,29 @@ function makeRadius(pos,radius){
 
 // var myEvent = {Title:"Tittel", venueCoordinates:[63.4224338, 10.3957807]}
 //     var currentEvent = L.marker(myEvent.venueCoordinates).addTo(map);
+function getEvents(){
 
+}
 
 
 //Function that adds markers to map.
 //Also needs a array with events
 function addMarkers(map, eventlist) {
+    eventlist = getEvents();
     for (event in eventlist)
         var category = event.category_name;
         switch(category){
-            case 'Music': icon = musicpin;
+            case 'Music' || 'Consert' || 'Festival' : icon = musicpin;
             case 'Theater': icon = theaterpin;
             case 'Party': icon = partypin;
-            case 'Course': icon = coursepin;
+            case 'Course' || 'Lecture': icon = coursepin;
             case 'Literature' : icon = bookpin;
             case 'Outdoor' : icon = outdoorpin;
             case 'Exhibition':icon = exhitionpin;
             case 'Technology':icon=technologypin;
             case 'Food':icon = foodpin;
             case 'Sport':icon =sportpin;
+            case 'Movies':icon = moviepin;
         }
         var currentMarker = L.marker(event.venueCoordinates).addTo(map);
         currentMarker.setIcon(icon);
