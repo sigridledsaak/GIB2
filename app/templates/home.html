@@ -8,6 +8,8 @@
                 <form name="userInput" method="post" action="{{ url_for('home') }}">
                     <h6>On Date (required)</h6>
                     <input class="event-textinput" type="date" name="date" placeholder="On Date" />
+                    <h6>On time</h6>
+                    <input class="event-textinput" type="time" name="time" placeholder="On Time" />
                     <h6>Select Categories</h6>
                     <select class="event-textinput" type="text" name="category" multiple>
                         {% for category in categories %}
