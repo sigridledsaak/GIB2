@@ -1,6 +1,6 @@
 import datetime as dt
 from flask import render_template, request
-from app import app
+from app import app, db
 from .models import Event
 
 @app.route('/index')
@@ -13,19 +13,22 @@ def index():
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        date = dt.datetime.strptime(request.form.get('date'), "%Y-%m-%d").date()
-        print(type(date))
-        print(date)
-        time = dt.datetime.strptime(request.form.get('time'), "")
-        print(type(time))
-        print(time)
-        datetime = dt.datetime.combine(date, time)
-        print(datetime)
+        date = request.form.get('date')
+        time = request.form.get('time')
         category = request.form.get('category')
         ageLimit = request.form.get('ageLimit')
         distance = request.form.get('distance')
-        events = Event.query.filter_by(startdate=datetime).all()
-
+        events = db.session.query(Event.title, Event.category_name, Event.venueCoordinates, Event.startdate,
+                                  Event.ageRestriction).all()
+        #print(events)
+        if date and time:
+            date = dt.datetime.strptime(date, "%Y-%m-%d").date()
+            time = dt.datetime.strptime(time, "%H:%M").time()
+            datetime = dt.datetime.combine(date, time)
+            events = events & db.session.query(Event.title, Event.category_name, Event.venueCoordinates, Event.startdate,
+                                  Event.ageRestriction).filter_by(startdate=datetime).all()
+        print("passed if")
+        print(events)
         """
         if ageLimit:
             events = events.remove(Event.query.filter_by(ageRestriction='ageLimit').all())
