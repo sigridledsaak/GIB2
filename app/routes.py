@@ -1,6 +1,8 @@
 from flask import render_template, request
 from app import app
 from .models import Event
+from geopy.geocoders import Nominatim
+
 
 @app.route('/index')
 def index():
@@ -39,3 +41,15 @@ def about():
 def register():
     return render_template('register.html', categories=Event.CATEGORY_CHOICES, title="Register Event")
 
+
+
+def adresstocoordinates(adress): #adress is string
+    geolocator = Nominatim(user_agent="kan det staa hva som helst??")
+    location = geolocator.geocode(adress)
+    return (location.latitude, location.longitude)
+
+def coordinatestoadress(lat,lon):
+        stringformat = (str(lat) + ',' + str(lon))  # From number input to string
+        geolocator = Nominatim(user_agent="specify_your_app_name_here")
+        return geolocator.reverse(stringformat)
+        # returns full adress, ex:1, Elgeseter gate, Gløshaugen, Midtbyen, Trondheim, Trøndelag, 7030, Norge
