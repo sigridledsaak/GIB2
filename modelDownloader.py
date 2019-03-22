@@ -180,9 +180,6 @@ def main(n, m):
                                 os.remove(os.path.join(directory, filename))
                         return
 
-                print(event.FID)
-                print(Eventitems.index(event))
-
             os.remove(os.path.join(directory, filename))
 
         else:
@@ -191,4 +188,4 @@ def main(n, m):
 
 if __name__ == "__main__":
     # calling main function
-    main(1, 15)
+    main(1, 10)

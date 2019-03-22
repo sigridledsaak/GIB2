@@ -2,22 +2,21 @@
 {% block content %}
     <script src='static/leaflet.js'></script>
     <div class="row">
-          <div class="col-md-4">
-              <div class="content-section">
-                <h3>Filter events</h3>
-                <form name="userInput" method="GET">
-                    <h6>From</h6>
-                    <input class="event-textinput" type="date" name="startDate" placeholder="Start Date" />
-                    <h6>To</h6>
-                    <input class="event-textinput" type="date" name="endDate" placeholder="End Date" />
+        <div class="col-md-4">
+            <div class="content-section">
+                <h3>Show events</h3>
+                <form name="userInput" method="post" action="{{ url_for('home') }}">
+                    <h6>On Date (required)</h6>
+                    <input class="event-textinput" type="date" name="date" placeholder="On Date" />
+                    <h6>On time</h6>
+                    <input class="event-textinput" type="time" name="time" placeholder="On Time" />
                     <h6>Select Categories</h6>
                     <select class="event-textinput" type="text" name="category" multiple>
-                        <option type="checkbox" value="sports" />Sports</option>
-                        <option type="checkbox" value="concert" />Concert</option>
-                        <option type="checkbox" value="museum" />Museum</option>
-                        <option type="checkbox" value="theatre" />Theatre</option>
+                        {% for category in categories %}
+                            <option type="checkbox" value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
                     </select>
-                    <h6>Minimum Age Limit</h6>
+                    <h6>Max Age Limit</h6>
                     <input class="event-textinput" type="number" name="ageLimit" placeholder="Age Limit" />
                     <h6>Maximum Price</h6>
                     <input class="event-textinput" type="number" name="ticketPrize" placeholder="Ticket Price" />
@@ -25,27 +24,24 @@
                     <input class="event-textinput" type="number" name="distance" placeholder="Max distance from your location">
                     <br>
                     <p>Velg hvor avstanden skal måles fra</p>
-                    <input id ="pos" class ="radio" type="radio" name="pos" value="" onclick="getCurrPosition()"> From your current position<br>
-                    <input id ="markpos" class = "radio" type="radio" name="pos" value="" onclick ="getMarkPosition()"> From marked position on map<br>
+                    <input id="pos" class="radio" type="radio" name="pos" value="" onclick="getCurrPosition()"> From your current position<br>
+                    <input id="markpos" class="radio" type="radio" name="pos" value="" onclick ="getMarkPosition()"> From marked position on map<br>
                     <br>
                     <input class="action-button" type="submit" name="submit" placeholder="Show matching events">
                 </form>
-              </div>
-          </div>
-    <div>
-        <template id = 'template'>
-            <object id = 'events' content = 'Fest,Festival,Musikk'></object>
-        </template>
-    </div>
-        <div class="col-md-8">
-            <div id='map'></div>
-            <script src='static/leaflet.js'></script>
-            {% for event in events %}
-                <h1>{{ event.Title }}</h1>
-                <p> {{ event.Description }}</p>
-                <p> {{ event.venueName }}</p>
-                <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
-            {% endfor %}
+            </div>
         </div>
+    </div>
+    <div class="col-md-8">
+        <div id='map'></div>
+        <script src='static/leaflet.js'></script>
+    </div>
+    <div>
+        {% for event in events %}
+            <h1>{{ event.title }}</h1>
+            <p>{{ event.description }}</p>
+            <p>{{ event.venueName }}</p>
+            <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
+        {% endfor %}
     </div>
 {% endblock content %}

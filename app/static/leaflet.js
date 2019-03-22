@@ -1,10 +1,7 @@
-
-
 function setMap(){
+
+    var map = L.map('map').setView([63.427704, 10.396219], 13);
     console.log("Loading map");
-
-    var map = L.map('map').setView([63.4, 10.4], 13);
-
     L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -131,12 +128,6 @@ function makeRadius(pos,radius){
 }
 
 
-
-// var myEvent = {Title:"Tittel", venueCoordinates:[63.4224338, 10.3957807]}
-//     var currentEvent = L.marker(myEvent.venueCoordinates).addTo(map);
-function getEvents(){
-
-}
 
 
 //Function that adds markers to map.
