@@ -1,54 +1,55 @@
 import datetime as dt
 from flask import render_template, request
+from sqlalchemy import or_, and_
 from app import app, db
 from .models import Event
+
 
 @app.route('/index')
 def index():
     return "Hello, World!"
 
 
-
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
+        #Get user input
         date = request.form.get('date')
         time = request.form.get('time')
         category = request.form.get('category')
+        ticketPrize = request.form.get('ticketPrize')
         ageLimit = request.form.get('ageLimit')
         distance = request.form.get('distance')
-        events = db.session.query(Event.title, Event.category_name, Event.venueCoordinates, Event.startdate,
-                                  Event.ageRestriction).all()
-        #print(events)
+
+        filters = []
+
         if date and time:
             date = dt.datetime.strptime(date, "%Y-%m-%d").date()
             time = dt.datetime.strptime(time, "%H:%M").time()
             datetime = dt.datetime.combine(date, time)
-            events = events & db.session.query(Event.title, Event.category_name, Event.venueCoordinates, Event.startdate,
-                                  Event.ageRestriction).filter_by(startdate=datetime).all()
-        print("passed if")
-        print(events)
-        """
+            delta = datetime + dt.timedelta(days=1)
+            filters.append(Event.startdate >= datetime)
+            filters.append(Event.startdate <= delta)
         if ageLimit:
-            events = events.remove(Event.query.filter_by(ageRestriction='ageLimit').all())
+            filters.append(or_(Event.ageRestriction < ageLimit, Event.ageRestriction == None))
         if category:
-            events = events.remove(Event.query.filter_by(category='category').all())
-        """
-        return render_template('home.html', categories= Event.CATEGORY_CHOICES, events=events)
-    return render_template('home.html', categories= Event.CATEGORY_CHOICES)
+            filters.append(Event.category_name == category)
+        if ticketPrize:
+            filters.append(Event.regularPrice < ticketPrize)
 
-#@app.route('/home/search', methods=['GET', 'POST'])
-#def searchEvents():
+        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
+            .filter(and_(*filters)).all()
 
-
+        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events)
+    return render_template('home.html', categories=Event.CATEGORY_CHOICES)
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title ='About')
+    return render_template('about.html', title='About')
+
 
 @app.route('/register')
 def register():
     return render_template('register.html', categories=Event.CATEGORY_CHOICES, title="Register Event")
-

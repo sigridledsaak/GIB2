@@ -2,8 +2,8 @@
 {% block content %}
     <script src='static/leaflet.js'></script>
     <div class="row">
-          <div class="col-md-4">
-              <div class="content-section">
+        <div class="col-md-4">
+            <div class="content-section">
                 <h3>Show events</h3>
                 <form name="userInput" method="post" action="{{ url_for('home') }}">
                     <h6>On Date (required)</h6>
@@ -13,10 +13,10 @@
                     <h6>Select Categories</h6>
                     <select class="event-textinput" type="text" name="category" multiple>
                         {% for category in categories %}
-                        <option type="checkbox" value="{{ category }}">{{ category }}</option>
+                            <option type="checkbox" value="{{ category }}">{{ category }}</option>
                         {% endfor %}
                     </select>
-                    <h6>Minimum Age Limit</h6>
+                    <h6>Max Age Limit</h6>
                     <input class="event-textinput" type="number" name="ageLimit" placeholder="Age Limit" />
                     <h6>Maximum Price</h6>
                     <input class="event-textinput" type="number" name="ticketPrize" placeholder="Ticket Price" />
@@ -29,17 +29,20 @@
                     <button id ="pos">Get Location</button>
                     <button id ="markpos">Mark Position On Map</button>
                 </ul>
-              </div>
-          </div>
-        <div class="col-md-8">
+            </div>
+        </div>
+        <div>
             <div id='map'></div>
             <script src='static/leaflet.js'></script>
-            {% for event in events %}
-                <h1>{{ event.Title }}</h1>
-                <p> {{ event.Description }}</p>
-                <p> {{ event.venueName }}</p>
-                <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
-            {% endfor %}
+        </div>
+            <div>
+                {% for event in events %}
+                    <h1>{{ event.title }}</h1>
+                    <p>{{ event.description }}</p>
+                    <p>{{ event.venueName }}</p>
+                    <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock content %}
