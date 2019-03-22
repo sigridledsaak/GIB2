@@ -19,7 +19,7 @@ def home():
         point = wkb.loads(hexlocation, hex=True)
         long = point.x
         lat = point.y
-        return [long, lat]
+        return [lat, long]
 
     if request.method == 'POST':
         #Get user input
