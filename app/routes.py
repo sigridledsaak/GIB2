@@ -17,9 +17,9 @@ def home():
 
     def convertCoordinates(hexlocation):
         point = wkb.loads(hexlocation, hex=True)
-        longitude = point.x
-        latitude = point.y
-        return [longitude, latitude]
+        long = point.x
+        lat = point.y
+        return [long, lat]
 
     if request.method == 'POST':
         #Get user input
@@ -28,6 +28,7 @@ def home():
         category = request.form.get('category')
         ticketPrize = request.form.get('ticketPrize')
         ageLimit = request.form.get('ageLimit')
+        pos = request.form.get('pos')
         distance = request.form.get('distance')
 
         filters = []
@@ -49,11 +50,19 @@ def home():
         events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
             .filter(and_(*filters)).all()
 
-        """
+
+        cords = []
         for event in events:
-            event.venueCoordinates = convertCoordinates(str(event.venueCoordinates))
-        """
-        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events)
+            if event.venueCoordinates is not None:
+                coord = convertCoordinates(str(event.venueCoordinates))
+                cords.append(coord)
+            else:
+                cords.append('None')
+
+        print(events)
+        print(cords)
+
+        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords)
     return render_template('home.html', categories=Event.CATEGORY_CHOICES)
 
 

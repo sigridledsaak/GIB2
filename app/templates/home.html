@@ -31,17 +31,17 @@
                 </form>
             </div>
         </div>
-    </div>
-    <div class="col-md-8">
-        <div id='map'></div>
-        <script src='static/leaflet.js'></script>
-    </div>
-    <div>
-        {% for event in events %}
-            <h1>{{ event.title }}</h1>
-            <p>{{ event.description }}</p>
-            <p>{{ event.venueName }}</p>
-            <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
-        {% endfor %}
+        <div>
+            <div id='map'></div>
+            <script src='static/leaflet.js'></script>
+        </div>
+        <div>
+            {% for event in events %}
+                <h1>{{ event.title }}</h1>
+                <p>{{ event.description }}</p>
+                <p>{{ event.venueName }}</p>
+                <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
+            {% endfor %}
+        </div>
     </div>
 {% endblock content %}
