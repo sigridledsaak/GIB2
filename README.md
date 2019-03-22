@@ -33,21 +33,21 @@ APP_SETTINGS="config.DevelopmentConfig"
 DATABASE_URL="postgresql://localhost/beacons"
 
 ```
-Hvordan jobbe med dette inntil videre for Mons, Jakob og Sigrid:
-```
-git checkout frontMons
-git pull
-git checkout -b <tasknavn>
-```
-Når ferdig med tasken og du vet at det fungerer
+
+How to git (når du er ferdig med en oppgave)
 ```
 git add .
 git commit -m "Beskrivelse av task"
-git push --set-upstream origin <tasknavn>
+git push
 
-git checkout frontMons
-git pull origin <tasknavn>
-git add . 
-git commit -m "tasknavn"
+git pull dev
+```
+Fiks alle merge conflicts og sjekk at siden kjører som den skal.
+```
+git push
+
+git checkout dev
+git merge <branch>
+"SJEKK AT DET KJØRER"
 git push
 ```
