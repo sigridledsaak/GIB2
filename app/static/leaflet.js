@@ -1,6 +1,6 @@
 function setMap(){
 
-    var map = L.map('map').setView([63.427704, 10.396219], 13);
+    var map = L.map('map').setView([63.420704, 10.396219], 13.5);
     console.log("Loading map");
     L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -14,7 +14,12 @@ function setMap(){
     return map
 }
 
-var map = setMap();
+var map;
+try {
+    this.map = setMap();
+}catch(e){
+    this.map = map;
+}
 window.onload=map;
 var marker = L.marker();
 var clickcount=0;
@@ -104,10 +109,11 @@ function getMarkPosition(){
 }
 
 
+/*
 //Gjør at man kan trykke på kartet for å få posisjon.
-markpos= document.getElementById("markpos");
-markpos.addEventListener("click",markPosition);
-function markPosition() {
+//markpos= document.getElementById("markpos");
+//markpos.addEventListener("click",markPosition);
+function getMarkPosition() {
     map.on('click', function (e) {
         marker.setLatLng(e.latlng).addTo(map);
         marker.setIcon(starpin);
@@ -117,6 +123,7 @@ function markPosition() {
         marker.on('dragend', markerDrag=false);
     });
 }
+*/
 
 function makeRadius(pos,radius){
     var circle = L.circle(pos, {
@@ -127,38 +134,34 @@ function makeRadius(pos,radius){
     return circle;
 }
 
-
-
-
+/*
 //Function that adds markers to map.
 //Also needs a array with events
-function addMarkers(map, eventlist) {
-    eventlist = getEvents();
-    for (event in eventlist)
-        var category = event.category_name;
-        switch(category){
-            case 'Music' || 'Consert' || 'Festival' : icon = musicpin;
-            case 'Theater': icon = theaterpin;
-            case 'Party': icon = partypin;
-            case 'Course' || 'Lecture': icon = coursepin;
-            case 'Literature' : icon = bookpin;
-            case 'Outdoor' : icon = outdoorpin;
-            case 'Exhibition':icon = exhitionpin;
-            case 'Technology':icon=technologypin;
-            case 'Food':icon = foodpin;
-            case 'Sport':icon =sportpin;
-            case 'Movies':icon = moviepin;
-        }
-        var currentMarker = L.marker(event.venueCoordinates).addTo(map);
-        currentMarker.setIcon(icon);
-        currentMarker.bindPopup(event.Title +""); //Ikke sikker på om nødvendig med +""
-        currentMarker.on('mouseover', function (ev) {
-             ev.target.openPopup();
-             currentMarker.on('mouseout', function (e) {
-                 e.target.closePopup();
-
-             });
+function addMarker(pos,title) {
+    /*var category = event.category_name;
+    switch(category){
+        case 'Music' || 'Consert' || 'Festival' : icon = musicpin;
+        case 'Theater': icon = theaterpin;
+        case 'Party': icon = partypin;
+        case 'Course' || 'Lecture': icon = coursepin;
+        case 'Literature' : icon = bookpin;
+        case 'Outdoor' : icon = outdoorpin;
+        case 'Exhibition':icon = exhitionpin;
+        case 'Technology':icon=technologypin;
+        case 'Food':icon = foodpin;
+        case 'Sport':icon =sportpin;
+        case 'Movies':icon = moviepin;
+    }
+    var currentMarker = L.marker(pos).addTo(map);
+    currentMarker.setIcon(icon);
+    currentMarker.bindPopup('<strong>'+ title + '</strong>');
+    currentMarker.on('mouseover', function (ev) {
+         ev.target.openPopup();
+         currentMarker.on('mouseout', function (e) {
+             e.target.closePopup();
 
          });
-}
 
+     });
+}
+*/
