@@ -22,7 +22,7 @@ def home():
         return [lat, long]
 
     if request.method == 'POST':
-        #Get user input
+        #Get user input from form
         date = request.form.get('date')
         time = request.form.get('time')
         category = request.form.get('category')
