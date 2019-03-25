@@ -21,6 +21,21 @@ def home():
         lat = point.y
         return [lat, long]
 
+    datetime = dt.datetime.now()
+    delta = datetime + dt.timedelta(days=1)
+
+    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
+                .filter(Event.startdate >= datetime, Event.startdate <= delta)
+
+    defaultCords = []
+
+    for event in defaultEvents:
+        if event.venueCoordinates is not None:
+            coord = convertCoordinates(str(event.venueCoordinates))
+            defaultCords.append(coord)
+        else:
+            defaultCords.append('None')
+
     if request.method == 'POST':
         #Get user input from form
         date = request.form.get('date')
@@ -59,11 +74,8 @@ def home():
             else:
                 cords.append('None')
 
-        print(events)
-        print(cords)
-
         return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords)
-    return render_template('home.html', categories=Event.CATEGORY_CHOICES)
+    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
 
 
 @app.route('/about')
