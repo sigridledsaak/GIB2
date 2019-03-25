@@ -2,13 +2,48 @@
 {% block content %}
     <script src='static/leaflet.js'></script>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-12">
+            <div id='map'></div>
+            <script src='static/leaflet.js'></script>
+        </div>
+    </div>
+    <div id="filterEvent" class="filterEvent">
+        <button class="openbtn" onclick="openNav()">☰ Search Events</button>
+    </div>
+    <div id="sidebarSearch">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <form name="userInput" method="post" action="{{ url_for('home') }}">
+            <h6>Date</h6>
+            <input class="event-textinput" type="date" name="date" placeholder="On Date" />
+            <h6>Time </h6>
+            <input class="event-textinput" type="time" name="time" placeholder="On Time" />
+            <h6>Select Categories</h6>
+            <select class="event-textinput" type="text" name="category" multiple>
+                {% for category in categories %}
+                    <option type="checkbox" value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+            <h6>Max Age Limit</h6>
+            <input class="event-textinput" type="number" name="ageLimit" placeholder="Age Limit" />
+            <h6>Maximum Price</h6>
+            <input class="event-textinput" type="number" name="ticketPrize" placeholder="Ticket Price" />
+            <h6>Maximum distance (meters)</h6>
+            <input class="event-textinput" type="number" name="distance" placeholder="Max distance from your location">
+            <br>
+            <p>Velg hvor avstanden skal måles fra</p>
+            <input id="pos" class="radio" type="radio" name="pos" value="" onclick="getCurrPosition()"> From your current position<br>
+            <input id="markpos" class="radio" type="radio" name="pos" value="" onclick ="getMarkPosition()"> From marked position on map<br>
+            <br>
+            <input class="action-button" type="submit" name="submit" placeholder="Show matching events">
+        </form>
+    </div>
+        {#<div class="container menu">
             <div class="content-section">
-                <h3>Show events</h3>
+                <h3>Search events</h3>
                 <form name="userInput" method="post" action="{{ url_for('home') }}">
-                    <h6>On Date (required)</h6>
+                    <h6>Date</h6>
                     <input class="event-textinput" type="date" name="date" placeholder="On Date" />
-                    <h6>On time</h6>
+                    <h6>Time </h6>
                     <input class="event-textinput" type="time" name="time" placeholder="On Time" />
                     <h6>Select Categories</h6>
                     <select class="event-textinput" type="text" name="category" multiple>
@@ -30,18 +65,28 @@
                     <input class="action-button" type="submit" name="submit" placeholder="Show matching events">
                 </form>
             </div>
-        </div>
-        <div>
-            <div id='map'></div>
-            <script src='static/leaflet.js'></script>
-        </div>
-        <div>
-            {% for event in events %}
-                <h1>{{ event.title }}</h1>
-                <p>{{ event.description }}</p>
-                <p>{{ event.venueName }}</p>
-                <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
-            {% endfor %}
-        </div>
-    </div>
+        </div>#}
+        {#<div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                {% for event in events %}
+                    <h1>{{ event.title }}</h1>
+                    <p>{{ event.description }}</p>
+                    <p>{{ event.venueName }}</p>
+                    <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-2"></div>
+        </div>#}
+    <script>
+        function openNav() {
+          document.getElementById("filterEvent").style.width = "250px";
+          document.getElementById("sidebarSearch").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+          document.getElementById("filterEvent").style.width = "0";
+          document.getElementById("sidebarSearch").style.marginLeft= "0";
+        }
+    </script>
 {% endblock content %}
