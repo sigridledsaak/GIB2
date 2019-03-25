@@ -1,4 +1,4 @@
-function setMap(){
+function setMap(){;
 
     var map = L.map('map').setView([63.427704, 10.396219], 13);
     console.log("Loading map");
@@ -14,7 +14,14 @@ function setMap(){
     return map
 }
 
-var map = setMap();
+var map;
+try {
+    this.map = setMap();
+}catch(e){
+    this.map = map;
+
+}
+
 window.onload=map;
 var marker = L.marker();
 var clickcount=0;
@@ -117,7 +124,6 @@ function markPosition() {
         marker.on('dragend', markerDrag=false);
     });
 }
-
 function makeRadius(pos,radius){
     var circle = L.circle(pos, {
     color: 'blue',
@@ -127,38 +133,66 @@ function makeRadius(pos,radius){
     return circle;
 }
 
-
-
-
 //Function that adds markers to map.
 //Also needs a array with events
-function addMarkers(map, eventlist) {
-    eventlist = getEvents();
-    for (event in eventlist)
-        var category = event.category_name;
-        switch(category){
-            case 'Music' || 'Consert' || 'Festival' : icon = musicpin;
-            case 'Theater': icon = theaterpin;
-            case 'Party': icon = partypin;
-            case 'Course' || 'Lecture': icon = coursepin;
-            case 'Literature' : icon = bookpin;
-            case 'Outdoor' : icon = outdoorpin;
-            case 'Exhibition':icon = exhitionpin;
-            case 'Technology':icon=technologypin;
-            case 'Food':icon = foodpin;
-            case 'Sport':icon =sportpin;
-            case 'Movies':icon = moviepin;
-        }
-        var currentMarker = L.marker(event.venueCoordinates).addTo(map);
-        currentMarker.setIcon(icon);
-        currentMarker.bindPopup(event.Title +""); //Ikke sikker på om nødvendig med +""
+function addMarker(pos,title){
+    //var map = document.getElementById('map');
+    //console.log(category);
+    //console.log(typeof(category));
+    /*var icon;
+    switch(category){
+        case 'Concert' : icon = musicpin;
+        break;
+        case 'Theater': icon = theaterpin;
+        break;
+        case 'Party': icon = partypin;
+        break;
+        case 'Course'|| 'Lecture': icon = coursepin;
+        break;
+        case 'Literature' : icon = bookpin;
+        break;
+        case 'Outdoor' : icon = outdoorpin;
+        break;
+        case 'Exhibition':icon = exhitionpin;
+        break;
+        case 'Technology':icon=technologypin;
+        break;
+        case 'Food':icon = foodpin;
+        break;
+        case 'Sport':icon =sportpin;
+        break;
+        case 'Movies':icon = moviepin;
+        break;
+        default :
+            icon = null;
+    }
+    console.log(icon);
+    */
+    //må hente title og description for å lage popup. Tips : gjør det med å lage en get request til apiet og bruke derfra.
+    if (pos!=( 'None')){
+        var currentMarker = L.marker(pos).addTo(map);
+        tmpPopup = L.popup().setContent('<strong>'+title +'</strong>');
+        currentMarker.bindPopup(tmpPopup); //Ikke sikker på om nødvendig med +""
+    try {
         currentMarker.on('mouseover', function (ev) {
-             ev.target.openPopup();
-             currentMarker.on('mouseout', function (e) {
-                 e.target.closePopup();
-
-             });
-
+         ev.target.openPopup();
+         currentMarker.on('mouseout', function (e) {
+             e.target.closePopup();
          });
+     });
+    } catch {
+        console.log('Ingen events med koordinater');
+    }
+    }
+    /*if (icon != null){
+        currentMarker.setIcon(icon);
+    }
+    */
+
+
+
+
+
 }
+
 

@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-    <script src='static/leaflet.js'></script>
     <div class="row">
         <div class="col-md-4">
             <div class="content-section">
@@ -32,15 +31,34 @@
             </div>
         </div>
         <div>
-            <div id='map'></div>
+            <div id="map"></div>
             <script src='static/leaflet.js'></script>
         </div>
         <div>
-            {% for event in events %}
-                <h1>{{ event.title }}</h1>
-                <p>{{ event.description }}</p>
-                <p>{{ event.venueName }}</p>
-                <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
+            {% for i in range(0,events|length)%}
+                <h1>{{ events[i].title }}</h1>
+                <p>{{ events[i].description }}</p>
+                <p>{{ events[i].venueName }}</p>
+                <p> Venue Coordinates: {{ events[i].venueCoordinates }}</p>
+                <p> Latlong:{{ latlong[i] }}</p>
+                <p>{{ events[i].category_name}}</p>
+                <script>
+                    var pos = ({{ latlong[i] }});
+                    console.log(pos);
+                    var lat = pos[0];
+                    var long = pos[1];
+                    console.log([lat,long]);
+                    addMarker([lat,long]);
+                </script>
+                
+                
+                
+                
+                
+                
+
+                
+
             {% endfor %}
         </div>
     </div>
