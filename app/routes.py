@@ -48,7 +48,9 @@ def home():
         pos = request.form.get('pos')
         distance = request.form.get('distance')
 
+        lat_user, long_user = float(pos.split(',')[0]), float(pos.split(',')[1])
         filters = []
+
 
         if date and time:
             date = dt.datetime.strptime(date, "%Y-%m-%d").date()
@@ -79,7 +81,7 @@ def home():
             else:
                 cords.append('None')
 
-        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords)
+        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords,lat_user = lat_user, long_user = long_user, distance = distance)
     return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
 
 

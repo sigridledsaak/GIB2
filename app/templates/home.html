@@ -75,4 +75,24 @@
           document.getElementById("filterEvent").style.marginLeft= "0";
         }
     </script>
+    <script>
+    var starpin = new Icon({iconUrl: 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-28-512.png'});
+        if (({{ lat_user }}) != 'None') {
+            var lat_user = ({{ lat_user }});
+            var long_user = ({{ long_user }});
+
+            var marker = L.marker([lat_user, long_user]).addTo(map);
+            marker.setIcon(starpin);
+        }
+        if (({{ distance }}) != 'None') {
+            var dist = ({{ distance }});
+            var circle = L.circle([lat_user, long_user], {
+                color: 'grey',
+                fillColor: 'grey',
+                fillOpacity: 0.1,
+                radius: dist
+            }).addTo(map);
+        }
+        map.setView([lat_user,long_user]);
+    </script>
 {% endblock content %}

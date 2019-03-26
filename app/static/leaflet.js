@@ -1,6 +1,6 @@
 function setMap(){
 
-    var map = L.map('map').setView([63.420704, 10.396219], 13.5);
+    var map = L.map('map').setView([63.428704, 10.393219], 13.5);
     console.log("Loading map");
     L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -55,7 +55,7 @@ function getCurrPosition(){
                 console.log("Latitude: " + pos.coords.latitude +
                     " Longitude: " + pos.coords.longitude);
                 marker.setLatLng([pos.coords.latitude, pos.coords.longitude]);
-                marker.setIcon(personpin);
+                marker.setIcon(starpin);
                 map.setView([pos.coords.latitude, pos.coords.longitude], 13, {animation: true});
                 marker.bindPopup("<strong> Din posisjon!</strong>").addTo(map);
                 //circle = makeRadius([pos.coords.latitude, pos.coords.longitude],500);
