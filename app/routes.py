@@ -1,9 +1,14 @@
+import datetime as dt
 from flask import render_template, request
 from app import app, db
 from .models import Event
 from app.forms import EventForm
 from geopy.geocoders import Nominatim
 import datetime as dt
+from sqlalchemy import or_, and_
+from app import app, db
+from .models import Event
+from shapely import wkb
 
 
 @app.route('/index')
@@ -14,23 +19,68 @@ def index():
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    date = request.form.get('date')
-    category = request.form.get('category')
-    ageLimit = request.form.get('ageLimit')
-    distance = request.form.get('distance')
-    events = Event.query.filter_by(startdate='date')
-    print(date)
 
-    # if ageLimit:
-    # events = events.remove(Event.query.filter_by(ageLimit='ageLimit').all())
-    # if category:
-    # events = events.remove(Event.query.filter_by(category='category').all())
+    def convertCoordinates(hexlocation):
+        point = wkb.loads(hexlocation, hex=True)
+        long = point.x
+        lat = point.y
+        return [lat, long]
 
-    return render_template('home.html', categories=Event.CATEGORY_CHOICES)
+    datetime = dt.datetime.now()
+    delta = datetime + dt.timedelta(days=1)
+
+    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
+                .filter(Event.startdate >= datetime, Event.startdate <= delta)
+
+    defaultCords = []
+
+    for event in defaultEvents:
+        if event.venueCoordinates is not None:
+            coord = convertCoordinates(str(event.venueCoordinates))
+            defaultCords.append(coord)
+        else:
+            defaultCords.append('None')
+
+    if request.method == 'POST':
+        #Get user input from form
+        date = request.form.get('date')
+        time = request.form.get('time')
+        category = request.form.get('category')
+        ticketPrize = request.form.get('ticketPrize')
+        ageLimit = request.form.get('ageLimit')
+        pos = request.form.get('pos')
+        distance = request.form.get('distance')
+
+        filters = []
+
+        if date and time:
+            date = dt.datetime.strptime(date, "%Y-%m-%d").date()
+            time = dt.datetime.strptime(time, "%H:%M").time()
+            datetime = dt.datetime.combine(date, time)
+            delta = datetime + dt.timedelta(days=1)
+            filters.append(Event.startdate >= datetime)
+            filters.append(Event.startdate <= delta)
+        if ageLimit:
+            filters.append(or_(Event.ageRestriction < ageLimit, Event.ageRestriction == None))
+        if category:
+            filters.append(Event.category_name == category)
+        if ticketPrize:
+            filters.append(Event.regularPrice < ticketPrize)
+
+        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl)\
+            .filter(and_(*filters)).all()
 
 
-# @app.route('/home/search', methods=['GET', 'POST'])
-# def searchEvents():
+        cords = []
+        for event in events:
+            if event.venueCoordinates is not None:
+                coord = convertCoordinates(str(event.venueCoordinates))
+                cords.append(coord)
+            else:
+                cords.append('None')
+
+        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords)
+    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
 
 
 @app.route('/about')
@@ -45,13 +95,13 @@ def register():
 
         new_event = create_empytevent()
         addfieldstoemptyevent(new_event)
-
         #Adding the event to db
         db.session.add(new_event)
         db.session.commit()
         print("Object added!")
 
     return render_template('register.html', categories=Event.CATEGORY_CHOICES, title="Register Event")
+
 
 
 def correctdateTime(startTime, date):

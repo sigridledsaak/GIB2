@@ -53,6 +53,18 @@ body {
 	color: #2C3E50;
 	font-size: 13px;
 }
+
+#msform input:required, #msform textarea {
+	padding: 15px;
+	border: 1px solid #cc001e;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;
+}
 /*buttons*/
 #msform .action-button {
 	width: 100px;
