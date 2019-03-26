@@ -26,7 +26,7 @@ def home():
     datetime = dt.datetime.now()
     delta = datetime + dt.timedelta(days=4)
 
-    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
+    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.venueName,Event.venueAddress)\
                 .filter(Event.startdate >= datetime, Event.startdate <= delta)
 
     defaultCords = []
@@ -69,8 +69,9 @@ def home():
             user_point = WKTElement('POINT({} {})'.format(pos.split(',')[1],pos.split(',')[0]))
             filters.append(ga.ST_Distance(Event.venueCoordinates, user_point) <= distance)
 
-        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl)\
-            .filter(and_(*filters)).all()
+        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate,
+                                  Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,
+                                  Event.venueAddress).filter(and_(*filters)).all()
 
 
         cords = []
@@ -82,7 +83,7 @@ def home():
                 cords.append('None')
 
         return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords,lat_user = lat_user, long_user = long_user, distance = distance)
-    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
+    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords,)
 
 
 @app.route('/about')
