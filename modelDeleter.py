@@ -9,6 +9,16 @@ def delete_old_events():
     delta = datetime + dt.timedelta(days=-1)
     events = db.session.query(Event).filter(Event.startdate <= delta).all()
     for event in events:
-        db.session.remove(event)
+        print(event)
+        db.session.delete(event)
+    db.session.commit()
 
     return "Outdated events deleted!"
+
+def main():
+    delete_old_events()
+
+
+if __name__ == "__main__":
+    #"calling the function"
+    main()
