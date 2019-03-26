@@ -62,7 +62,7 @@ def home():
         if ticketPrize:
             filters.append(Event.regularPrice < ticketPrize)
 
-        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
+        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl)\
             .filter(and_(*filters)).all()
 
 

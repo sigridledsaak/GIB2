@@ -43,27 +43,25 @@
             <p></p>
         </form>
         </div>
-    <script src = 'static/leaflet.js'></script>
     {% for i in range(0,latlong|length)%}
         <script>
             var pos = ({{ latlong[i] }});
-            var lat = pos[0];
-            var long = pos[1];
-            console.log([lat,long]);
-            if (pos!='None'){
+            if (pos != 'None'){
+                var lat = pos[0];
+                var long = pos[1];
+                console.log([lat,long]);
                 var currentMarker = L.marker(pos).addTo(map);
                 //var popup = ('<p>'+ '{{ events[i].title }}' +'</p>'+'<br>'+'<p>'+{{ events[i].startDate }}+'</p>');
                 currentMarker.bindPopup('<h5>{{ events[i].title }}</h5><p class = "date">{{ events[i].startdate }}</p>'
-                    +'<p>{{events[i].category_name}}</p><button onclick = visMer()>Vis mer</button>');
+                    +'<p>{{events[i].category_name}}</p><a href = {{ events[i].facebookEventUrl }} class=button target="_blank">Gå til event</a>');
+                currentMarker.on('mouseover', function (ev) {
+                    ev.target.openPopup();
+                    currentMarker.on('mouseout', function (e) {
+                        e.target.closePopup();
 
-            currentMarker.on('mouseover', function (ev) {
-                ev.target.openPopup();
-                currentMarker.on('mouseout', function (e) {
-                    e.target.closePopup();
-
+                    });
                 });
-            });
-            }
+        }
         </script>
     {% endfor %}
     <script>
