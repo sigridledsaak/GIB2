@@ -4,6 +4,7 @@ from sqlalchemy import or_, and_
 from app import app, db
 from .models import Event
 from shapely import wkb
+import geoalchemy2.functions as ga
 
 
 @app.route('/index')
@@ -61,6 +62,8 @@ def home():
             filters.append(Event.category_name == category)
         if ticketPrize:
             filters.append(Event.regularPrice < ticketPrize)
+        if pos and distance:
+            filters.append(ga.ST_Distance(Event.venueCoordinates, 'Point(' + str(pos[1]) + ' ' + str(pos[0]) + ')') <= distance)
 
         events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl)\
             .filter(and_(*filters)).all()
