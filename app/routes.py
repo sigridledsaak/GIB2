@@ -24,7 +24,7 @@ def home():
     datetime = dt.datetime.now()
     delta = datetime + dt.timedelta(days=1)
 
-    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
+    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,Event.venueAddress)\
                 .filter(Event.startdate >= datetime, Event.startdate <= delta)
 
     defaultCords = []
@@ -62,7 +62,7 @@ def home():
         if ticketPrize:
             filters.append(Event.regularPrice < ticketPrize)
 
-        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl)\
+        events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,Event.venueAddress)\
             .filter(and_(*filters)).all()
 
 

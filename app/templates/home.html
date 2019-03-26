@@ -51,12 +51,12 @@
                 var long = pos[1];
                 console.log([lat,long]);
                 var currentMarker = L.marker(pos).addTo(map);
-                //var popup = ('<p>'+ '{{ events[i].title }}' +'</p>'+'<br>'+'<p>'+{{ events[i].startDate }}+'</p>');
-                currentMarker.bindPopup('<h5>{{ events[i].title }}</h5><p class = "date">{{ events[i].startdate }}</p>'
-                    +'<p>{{events[i].category_name}}</p><a href = {{ events[i].facebookEventUrl }} class=button target="_blank">Gå til event</a>');
+                currentMarker.bindPopup('<h5>{{ events[i].title }}</h5><p>{{ events[i].startdate.time() }} , {{ events[i].startdate.date() }}</p> '
+                    +'<p>{{events[i].category_name}}</p> <p>{{ events[i].venueName }} , {{ events[i].venueAddress }} </p>  '+
+                    '<a href = {{ events[i].facebookEventUrl }} class=button target="_blank">Gå til event</a>');
                 currentMarker.on('mouseover', function (ev) {
                     ev.target.openPopup();
-                    currentMarker.on('mouseout', function (e) {
+                    currentMarker.popUp().on('mouseout', function (e) {
                         e.target.closePopup();
 
                     });
