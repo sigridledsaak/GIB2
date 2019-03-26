@@ -7,7 +7,7 @@ class Event(db.Model):
     __tablename__ = 'Event'
 
     ID = db.Column(db.Integer, primary_key=True, index=True)
-    FID = db.Column(db.Integer, default='none', index=True)
+    FID = db.Column(db.Integer, index=True)
     title = db.Column(db.String)
     description = db.Column(db.String)
     startdate = db.Column(db.TIMESTAMP)
