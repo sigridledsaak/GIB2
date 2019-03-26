@@ -9,6 +9,8 @@ from sqlalchemy import or_, and_
 from app import app, db
 from .models import Event
 from shapely import wkb
+import geoalchemy2.functions as ga
+from geoalchemy2.elements import WKTElement
 
 
 @app.route('/index')
@@ -27,7 +29,7 @@ def home():
         return [lat, long]
 
     datetime = dt.datetime.now()
-    delta = datetime + dt.timedelta(days=1)
+    delta = datetime + dt.timedelta(days=4)
 
     defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
                 .filter(Event.startdate >= datetime, Event.startdate <= delta)
@@ -66,6 +68,9 @@ def home():
             filters.append(Event.category_name == category)
         if ticketPrize:
             filters.append(Event.regularPrice < ticketPrize)
+        if pos and distance:
+            user_point = WKTElement('POINT({} {})'.format(pos.split(',')[1],pos.split(',')[0]))
+            filters.append(ga.ST_Distance(Event.venueCoordinates, user_point) <= distance)
 
         events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl)\
             .filter(and_(*filters)).all()
