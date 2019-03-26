@@ -5,6 +5,7 @@ from app import app, db
 from .models import Event
 from shapely import wkb
 import geoalchemy2.functions as ga
+from geoalchemy2.elements import WKTElement
 
 
 @app.route('/index')
@@ -63,7 +64,8 @@ def home():
         if ticketPrize:
             filters.append(Event.regularPrice < ticketPrize)
         if pos and distance:
-            filters.append(ga.ST_Distance(Event.venueCoordinates, 'Point(' + str(pos[1]) + ' ' + str(pos[0]) + ')') <= distance)
+            user_point = WKTElement('POINT({} {})'.format(pos.split(',')[1],pos.split(',')[0]))
+            filters.append(ga.ST_Distance(Event.venueCoordinates, user_point) <= distance)
 
         events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl)\
             .filter(and_(*filters)).all()
