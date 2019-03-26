@@ -22,7 +22,7 @@ def home():
         return [lat, long]
 
     datetime = dt.datetime.now()
-    delta = datetime + dt.timedelta(days=1)
+    delta = datetime + dt.timedelta(days=4)
 
     defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates)\
                 .filter(Event.startdate >= datetime, Event.startdate <= delta)
