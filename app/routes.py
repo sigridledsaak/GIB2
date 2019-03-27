@@ -77,13 +77,6 @@ def home():
                                   Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,
                                   Event.venueAddress).filter(and_(*filters)).all()
 
-        ctg = []
-        for event in events:
-            if event.category_name is not None:
-                ctg.append(str(event.category_name))
-            else:
-                ctg.append('None')
-
         cords = []
         for event in events:
             if event.venueCoordinates is not None:
@@ -92,7 +85,7 @@ def home():
             else:
                 std = [0,0]
                 cords.append(std)
-        print(cords)
+
         return render_template('home.html', categories=Event.CATEGORY_CHOICES, events_latlong=zip(events,cords), lat_user=lat, long_user=long, distance = distance)
     return render_template('home.html', categories=Event.CATEGORY_CHOICES, events_latlong=zip(defaultEvents, defaultCords))
 
