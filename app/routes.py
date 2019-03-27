@@ -27,7 +27,7 @@ def home():
     datetime = dt.datetime.now()
     delta = datetime + dt.timedelta(days=4)
 
-    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.venueName,Event.venueAddress)\
+    defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,Event.venueAddress)\
                 .filter(Event.startdate >= datetime, Event.startdate <= delta)
 
     defaultCords = []
@@ -84,7 +84,7 @@ def home():
                 cords.append('None')
 
         return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords,lat_user = lat_user, long_user = long_user, distance = distance)
-    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords,)
+    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
 
 
 @app.route('/about')
