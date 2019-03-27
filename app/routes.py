@@ -138,14 +138,14 @@ def create_empytevent():
     return newEvent
 
 
-def adresstocoordinates(adress):  # adress is string
-    geolocator = Nominatim(user_agent="kan det staa hva som helst??")
-    location = geolocator.geocode(adress)
+def adresstocoordinates(address):  # adress is string
+    geolocator = Nominatim(user_agent="EventFinder")
+    location = geolocator.geocode(address)
     return (location.latitude, location.longitude)
 
 
 def coordinatestoadress(lat, lon):
     stringformat = (str(lat) + ',' + str(lon))  # From number input to string
-    geolocator = Nominatim(user_agent="specify_your_app_name_here")
+    geolocator = Nominatim(user_agent="EventFinder")
     return geolocator.reverse(stringformat)
     # returns full adress, ex:1, Elgeseter gate, Gløshaugen, Midtbyen, Trondheim, Trøndelag, 7030, Norge
