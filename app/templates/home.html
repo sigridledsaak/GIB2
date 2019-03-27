@@ -42,7 +42,7 @@
             <p></p>
             <p></p>
         </form>
-        </div>
+    </div>
     {% for i in range(0,latlong|length)%}
         <script>
             var pos = ({{ latlong[i] }});
@@ -59,7 +59,6 @@
                     ev.target.openPopup();
                     currentMarker.on('mouseout', function (e) {
                         e.target.closePopup();
-
                     });
                 });
         }
