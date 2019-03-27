@@ -45,33 +45,26 @@
     </div>
     {% for i in range(0,latlong|length)%}
         <script>
-            var pos = ({{ latlong[i] }});
-            if (pos != 'None'){
+            try {
+                pos = ({{ latlong[i] }});
                 var lat = pos[0];
                 var long = pos[1];
                 console.log([lat,long]);
                 var category = '{{ events[i].category_name }}';
                 var title = '{{ events[i].title }}';
-                var starttime ='{{ events[i].starttime.time() }}';
-                var startdate ='{{ events[i].starttime.date }}';
+                var starttime ='{{ events[i].startdate.time() }}';
+                var startdate ='{{ events[i].startdate.date() }}';
                 var vname = '{{ events[i].venueName}}';
                 var vaddress='{{ events[i].venueAddress }}';
                 var furl = '{{ events[i].facebookEventUrl }}';
                 console.log(title);
                 console.log(category);
+                console.log('furl'+ furl);
                 addMarker([lat,long],title,category,starttime,startdate,furl,vname,vaddress);
+        }catch (e){
+                console.log(e);
+            }
 
-
-                var currentMarker = L.marker(pos).addTo(map);
-
-                //var popup = ('<p>'+ '{{ events[i].title }}' +'</p>'+'<br>'+'<p>'+{{ events[i].startDate }}+'</p>');
-                currentMarker.bindPopup('<h5>{{ events[i].title }}</h5><p>{{ events[i].startdate.time() }} , {{ events[i].startdate.date() }}</p> '
-                                        +'<p>{{events[i].category_name}}</p> <p>{{ events[i].venueName }} , {{ events[i].venueAddress }} </p>  '+
-                                        '<a href = {{ events[i].facebookEventUrl }} class=button target="_blank">Gå til event</a>');
-                currentMarker.on('click', function (ev) {
-                    ev.target.openPopup();
-                });
-        }
         </script>
     {% endfor %}
     <script>
@@ -87,7 +80,7 @@
     </script>
     <script>
     var starpin = new Icon({iconUrl: 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-28-512.png'});
-        if (({{ lat_user }}) != 'None') {
+        if ('({{ lat_user }})' != 'None') {
             var lat_user = ({{ lat_user }});
             var long_user = ({{ long_user }});
 

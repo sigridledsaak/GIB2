@@ -37,7 +37,11 @@ def home():
             coord = convertCoordinates(str(event.venueCoordinates))
             defaultCords.append(coord)
         else:
-            defaultCords.append('None')
+            if event.venueAddress is not None:
+                c = adresstocoordinates((event.venueAddress))
+                defaultCords.append(c)
+            else :
+                defaultCords.append('None')
 
     if request.method == 'POST':
         #Get user input from form
@@ -81,7 +85,11 @@ def home():
                 coord = convertCoordinates(str(event.venueCoordinates))
                 cords.append(coord)
             else:
-                cords.append('None')
+                if event.venueAddress is not None:
+                    c = adresstocoordinates((event.venueAddress))
+                    cords.append(c)
+                else :
+                    cords.append('None')
 
         return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords,lat_user = lat_user, long_user = long_user, distance = distance)
     return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
@@ -134,9 +142,13 @@ def create_empytevent():
 
 
 def adresstocoordinates(adress):  # adress is string
+
     geolocator = Nominatim(user_agent="kan det staa hva som helst??")
     location = geolocator.geocode(adress)
-    return (location.latitude, location.longitude)
+    if (location is None):
+        return 'None'
+    else :
+        return [location.latitude, location.longitude]
 
 
 def coordinatestoadress(lat, lon):

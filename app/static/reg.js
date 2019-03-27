@@ -81,7 +81,10 @@ $( document ).ready(function() {
 	});
 
 	$(".submit").click(function () {
-		validateForm()
+		if (validateForm()){
+			alert('Your event has been created successfully!')
+		}
+
 	});
 });
 
@@ -91,7 +94,7 @@ function validateForm() {
   var date = document.forms["msform"]["date"].value;
   var time = document.forms["msform"]["startTime"].value;
 
-  if (!address) {
+  if (address=="") {
     alert("Address must be filled out");
     return false;
   }
@@ -103,6 +106,7 @@ function validateForm() {
     alert("time must be filled out");
     return false;
   }
+  return true;
 
 
 }

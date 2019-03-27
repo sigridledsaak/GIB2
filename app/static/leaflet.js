@@ -27,8 +27,9 @@ var clickcount=0;
 var Icon = L.Icon.extend({
     options: {
         iconUrl: 'https://cdn2.iconfinder.com/data/icons/location-map-simplicity/512/theatre-512.png',
-        iconSize:     [30, 50],
-        iconAnchor:   [15, 49]
+        iconSize:     [28, 38],
+        iconAnchor:   [18, 44],
+        popupAnchor: [-4, -40]
     }
 });
 //bruk disse markerene så får me alle i samme størrelse og format.
@@ -43,7 +44,7 @@ var outdoorpin=new Icon({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-l
 var exhitionpin=new Icon({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-13-512.png'});
 var technologypin = new Icon ({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-23-512.png'});
 var foodpin = new Icon ({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-19-256.png'});
-var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[50, 70]});
+var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[45,55], popupAnchor:[3,-33]});
 var personpin=new Icon({iconUrl:'https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-5/128/map-location-person-512.png', iconSize : [50,40]});
 var moviepin = new Icon({iconUrl: 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-02-512.png'});
 
@@ -139,29 +140,64 @@ function makeRadius(pos,radius){
 //Also needs a array with events
 function addMarker(pos,title,category,starttime,startdate,furl,vname,vaddress) {
     switch(category){
-        case 'Music' || 'Consert' || 'Festival' : icon = musicpin;
-        case 'Theater': icon = theaterpin;
-        case 'Party': icon = partypin;
-        case 'Course' || 'Lecture': icon = coursepin;
-        case 'Literature' : icon = bookpin;
-        case 'Outdoor' : icon = outdoorpin;
-        case 'Exhibition':icon = exhitionpin;
-        case 'Technology':icon=technologypin;
-        case 'Food':icon = foodpin;
-        case 'Sport':icon =sportpin;
-        case 'Movies':icon = moviepin;
+        case 'Family':
+            icon= starpin;
+            break;
+        case 'Concert':
+            icon= musicpin;
+            break;
+        case 'Course' :
+            icon= coursepin;
+            break;
+        case 'Lecture':
+            icon = coursepin;
+            break;
+        case 'Technology':
+            icon = technologypin;
+            break;
+        case 'Art':
+            icon= exhitionpin;
+            break;
+        case 'Food':
+            icon= foodpin;
+            break;
+        case 'Outdoor':
+            icon= outdoorpin;
+            break;
+        case 'Party':
+            icon= partypin;
+            break;
+        case 'Theatre':
+            icon= theaterpin;
+            break;
+        case 'Sport':
+            icon= sportpin;
+            break;
+        case 'Literature':
+            icon=bookpin;
+            break;
+        case 'Exhibition':
+            icon = exhitionpin;
+            break;
+        case 'Movies':
+            icon = moviepin;
+            break;
+        case '':
+            icon = exhitionpin;
+            break;
+        default:
+            icon= null;
     }
     var currentMarker = L.marker(pos).addTo(map);
-    currentMarker.setIcon(icon);
-    currentMarker.bindPopup('<h5>title</h5><p>starttime , startdate</p><p>category</p> <p>vname,vaddress }} </p>  '+
-                                        '<a href = furl class=button target="_blank">Gå til event</a>');
-    currentMarker.on('mouseover', function (ev) {
+    if (icon!=null)
+        currentMarker.setIcon(icon);
+    var popup = ('<h5>'+title+'</h5><p>'+starttime+', '+ startdate+'</p><p>'+category+'</p> <p>'+vname+', '+vaddress+' </p>  ');
+    if (furl !=''){
+        popup += ('<a href = '+furl+' class=button target="_blank">Go to event</a>');
+    }
+    currentMarker.bindPopup(popup);
+    currentMarker.on('click', function (ev) {
          ev.target.openPopup();
-         currentMarker.on('mouseout', function (e) {
-             e.target.closePopup();
-
-         });
-
      });
 }
 
