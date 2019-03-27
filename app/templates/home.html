@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
     <script src='static/leaflet.js'></script>
     <div class="row">
         <div class="col-12">
@@ -43,7 +46,37 @@
             <p></p>
         </form>
     </div>
-    {% for i in range(0,latlong|length)%}
+
+    <script type="text/javascript">
+      var options = {  //**spiderfier
+        keepSpiderfied: true,
+      };
+      var oms = new OverlappingMarkerSpiderfier(map, options);
+
+      var geocoder = L.Control.geocoder({
+              defaultMarkGeocode: false
+          }).on('markgeocode', function(e) {
+              var bbox = e.geocode.bbox;
+              map.fitBounds(e.geocode.bbox);
+          })
+          .addTo(map);
+
+          {% for event, cords in events_latlong %}
+              var cord = {{ cords }}
+              console.log(cord);
+              var marker = L.marker(cord);
+              marker.bindPopup('<h5>{{ event.title }}</h5><p>{{ event.startdate.time() }} , {{ event.startdate.date() }}</p> '
+                                    +'<p>{{event.category_name}}</p> <p>{{ event.venueName }} , {{ event.venueAddress }} </p>  '+
+                                    '<a href = {{ event.facebookEventUrl }} class=button target="_blank">Gå til event</a>');
+              marker.on('click', function (ev) {
+                  ev.target.openPopup();
+              });
+              marker.addTo(map);
+              map.addLayer(marker);
+              oms.addMarker(marker);
+          {% endfor %}
+    </script>
+    {#{% for i in range(0,latlong|length)%}
         <script>
             var pos = ({{ latlong[i] }});
             if (pos != 'None'){
@@ -60,7 +93,7 @@
                 });
         }
         </script>
-    {% endfor %}
+    {% endfor %}#}
     <script>
         function openNav() {
           document.getElementById("sidebarSearch").style.width = "400px";
