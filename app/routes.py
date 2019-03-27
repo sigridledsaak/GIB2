@@ -87,10 +87,6 @@ def home():
     return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html', title='About')
-
 
 @app.route('/register', methods=('POST', 'GET'))
 def register():

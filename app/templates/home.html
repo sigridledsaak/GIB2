@@ -55,11 +55,8 @@
                 currentMarker.bindPopup('<h5>{{ events[i].title }}</h5><p>{{ events[i].startdate.time() }} , {{ events[i].startdate.date() }}</p> '
                                         +'<p>{{events[i].category_name}}</p> <p>{{ events[i].venueName }} , {{ events[i].venueAddress }} </p>  '+
                                         '<a href = {{ events[i].facebookEventUrl }} class=button target="_blank">Gå til event</a>');
-                currentMarker.on('mouseover', function (ev) {
+                currentMarker.on('click', function (ev) {
                     ev.target.openPopup();
-                    currentMarker.on('mouseout', function (e) {
-                        e.target.closePopup();
-                    });
                 });
         }
         </script>
