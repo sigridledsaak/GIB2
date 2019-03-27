@@ -134,11 +134,10 @@ function makeRadius(pos,radius){
     return circle;
 }
 
-/*
+
 //Function that adds markers to map.
 //Also needs a array with events
-function addMarker(pos,title) {
-    /*var category = event.category_name;
+function addMarker(pos,title,category,starttime,startdate,furl,vname,vaddress) {
     switch(category){
         case 'Music' || 'Consert' || 'Festival' : icon = musicpin;
         case 'Theater': icon = theaterpin;
@@ -154,7 +153,8 @@ function addMarker(pos,title) {
     }
     var currentMarker = L.marker(pos).addTo(map);
     currentMarker.setIcon(icon);
-    currentMarker.bindPopup('<strong>'+ title + '</strong>');
+    currentMarker.bindPopup('<h5>title</h5><p>starttime , startdate</p><p>category</p> <p>vname,vaddress }} </p>  '+
+                                        '<a href = furl class=button target="_blank">Gå til event</a>');
     currentMarker.on('mouseover', function (ev) {
          ev.target.openPopup();
          currentMarker.on('mouseout', function (e) {
@@ -164,4 +164,4 @@ function addMarker(pos,title) {
 
      });
 }
-*/
+
