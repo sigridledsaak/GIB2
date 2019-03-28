@@ -28,7 +28,7 @@ var Icon = L.Icon.extend({
         iconUrl: 'https://cdn2.iconfinder.com/data/icons/location-map-simplicity/512/theatre-512.png',
         iconSize:     [28, 30],
         iconAnchor:   [15, 30],
-        popupAnchor: [0, -25]
+        popupAnchor: [-1, -25]
     }
 });
 //bruk disse markerene så får me alle i samme størrelse og format.
@@ -43,10 +43,10 @@ var outdoorpin=new Icon({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-l
 var exhitionpin=new Icon({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-13-512.png'});
 var technologypin = new Icon ({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-23-512.png'});
 var foodpin = new Icon ({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-19-256.png'});
-var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[45,45], popupAnchor:[3,-33]});
+var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[45,45],iconAnchor:[23,37], popupAnchor:[-1,-27]});
 var personpin=new Icon({iconUrl:'https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-5/128/map-location-person-512.png', iconSize : [50,40]});
 var moviepin = new Icon({iconUrl: 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-02-512.png'});
-
+var nothingpin = new Icon({iconUrl:'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',iconSize : [23,28]});
 
 function getCurrPosition(){
     if (navigator.geolocation) {
@@ -169,6 +169,12 @@ function addMarker(pos,title,category,starttime,startdate,furl,vname,vaddress) {
         case 'Theatre':
             icon= theaterpin;
             break;
+        case 'Festival':
+            icon= musicpin;
+            break;
+        case 'Theater':
+            icon= theaterpin;
+            break;
         case 'Sport':
             icon= sportpin;
             break;
@@ -185,14 +191,17 @@ function addMarker(pos,title,category,starttime,startdate,furl,vname,vaddress) {
             icon = exhitionpin;
             break;
         default:
-            icon= null;
+            icon = nothingpin;
     }
     var currentMarker = L.marker(pos);
     if (icon!=null)
         currentMarker.setIcon(icon);
-    var popup = ('<h5>'+title+'</h5><p>'+starttime+', '+ startdate+'</p><p>'+category+'</p> <p>'+vname+', '+vaddress+' </p>  ');
+    var time = starttime.substring(0,starttime.length -3);
+    var date = startdate.substring(8,10)+'.'+startdate.substring(5,7)+'.'+ startdate.substring(0,4);
+    console.log(date);
+    var popup = ('<h5>'+title+'</h5><p><i class="far fa-clock"></i> '+time+'    <i class="far fa-calendar-alt"></i> '+ date+'</p><p><i class="far fa-star"></i> '+category+'</p> <p><i class="fas fa-map-marker-alt"></i>  '+vname+', '+vaddress+' </p>  ');
     if (furl !=''){
-        popup += ('<a href = '+furl+' class=button target="_blank">Go to event</a>');
+        popup += ('<a href = '+furl+' class=button target="_blank"><i class="fab fa-facebook-square"></i> Go to event</a>');
     }
     currentMarker.bindPopup(popup);
     currentMarker.on('click', function (ev) {
