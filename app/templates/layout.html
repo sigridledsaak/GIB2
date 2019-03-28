@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" />
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,23 +19,21 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='reg.css') }}">
     <!--<script type="text/javascript" src="{{ url_for('static', filename='reg.js') }}"></script>-->
     {% if title %}
-        <title>Event Oversikt - {{ title }}</title>
+        <title>Event Finder - {{ title }}</title>
     {% else %}
-        <title>Event Oversikt</title>
+        <title>Event Finder</title>
     {% endif %}
 </head>
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="/">Pablos Angels</a>
+          <a class="navbar-brand mr-4" href="/">Event Finder</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="/">Event Oversikt</a>
-              <a class="nav-item nav-link" href="/about">About</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
@@ -44,7 +43,7 @@
         </div>
       </nav>
     </header>
-    <main role="main" class="container">
+    <main role="main">
       {% block content %}{% endblock %}
     </main>
     <!-- Optional JavaScript -->

@@ -1,46 +1,148 @@
 {% extends "layout.html" %}
 {% block content %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
     <script src='static/leaflet.js'></script>
     <div class="row">
-          <div class="col-md-4">
-              <div class="content-section">
-                <h3>Filter events</h3>
-                <form name="userInput" method="GET">
-                    <h6>From</h6>
-                    <input class="event-textinput" type="date" name="startDate" placeholder="Start Date" />
-                    <h6>To</h6>
-                    <input class="event-textinput" type="date" name="endDate" placeholder="End Date" />
-                    <h6>Select Categories</h6>
-                    <select class="event-textinput" type="text" name="category" multiple>
-                        <option type="checkbox" value="sports" />Sports</option>
-                        <option type="checkbox" value="concert" />Concert</option>
-                        <option type="checkbox" value="museum" />Museum</option>
-                        <option type="checkbox" value="theatre" />Theatre</option>
-                    </select>
-                    <h6>Minimum Age Limit</h6>
-                    <input class="event-textinput" type="number" name="ageLimit" placeholder="Age Limit" />
-                    <h6>Maximum Price</h6>
-                    <input class="event-textinput" type="number" name="ticketPrize" placeholder="Ticket Price" />
-                    <h6>Maximum distance (meters)</h6>
-                    <input class="event-textinput" type="number" name="distance" placeholder="Max distance from your location">
-                    <br>
-                    <input class="action-button" type="submit" name="submit" placeholder="Show matching events">
-                </form>
-                <ul>
-                    <button id ="pos">Get Location</button>
-                    <button id ="markpos">Mark Position On Map</button>
-                </ul>
-              </div>
-          </div>
-        <div class="col-md-8">
+        <div class="col-12">
             <div id='map'></div>
             <script src='static/leaflet.js'></script>
-            {% for event in events %}
-                <h1>{{ event.Title }}</h1>
-                <p> {{ event.Description }}</p>
-                <p> {{ event.venueName }}</p>
-                <p> Venue Coordinates: {{ event.venueCoordinates }}</p>
-            {% endfor %}
         </div>
     </div>
+    <div id="filterEvent" class="filterEvent">
+        <button class="openbtn" onclick="openNav()">☰ Search Events</button>
+    </div>
+    <div id="sidebarSearch" class="sidebar" style="margin-top: 3rem">
+        <h3 style="margin-left: 20%">Search Events</h3>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <form name="userInput" style="margin-left: 20%" method="post" action="{{ url_for('home') }}">
+            <h6>Date</h6>
+            <input class="event-textinput" type="date" name="date" placeholder="On Date" />
+            <h6>Time </h6>
+            <input class="event-textinput" type="time" name="time" placeholder="On Time" />
+            <h6>Select Categories</h6>
+            <select class="event-textinput" type="text" name="category" multiple>
+                {% for category in categories %}
+                    <option type="checkbox" value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+            <h6>Max Age Limit</h6>
+            <input class="event-textinput" type="number" name="ageLimit" placeholder="Age Limit" />
+            <h6>Maximum Price</h6>
+            <input class="event-textinput" type="number" name="ticketPrize" placeholder="Ticket Price" />
+            <h6>Maximum distance (meters)</h6>
+            <input class="event-textinput" type="number" name="distance" placeholder="Max distance from your location">
+            <br>
+            <p>Velg hvor avstanden skal måles fra</p>
+            <input id="pos" class="radio" type="radio" name="pos" value="" onclick="getCurrPosition()"> From your current position<br>
+            <input id="markpos" class="radio" type="radio" name="pos" value="" onclick ="getMarkPosition()"> From marked position on map<br>
+            <br>
+            <input class="submit action-button" type="submit" name="submit" value="Search">
+            <p></p>
+            <p></p>
+            <br>
+            <p></p>
+            <p></p>
+        </form>
+    </div>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script type="text/javascript">
+        var options = {  //**spiderfier
+            keepSpiderfied: true,
+        };
+        var cluster = L.markerClusterGroup();
+        var oms = new OverlappingMarkerSpiderfier(map, options);
+
+        var geocoder = L.Control.geocoder({
+            defaultMarkGeocode: false
+            }).on('markgeocode', function(e) {
+              var bbox = e.geocode.bbox;
+              map.fitBounds(e.geocode.bbox);
+            })
+            .addTo(map);
+
+          {% for event, cords in events_latlong %}
+              try {
+                  var cord = {{ cords }}
+                  pos = ({{ cords }});
+                  var lat = pos[0];
+                  var long = pos[1];
+                  console.log([lat,long]);
+                  var category = '{{ event.category_name }}';
+                  var title = '{{ event.title }}';
+                  var starttime ='{{ event.startdate.time() }}';
+                  var startdate ='{{ event.startdate.date() }}';
+                  var vname = '{{ event.venueName}}';
+                  var vaddress='{{ event.venueAddress }}';
+                  var furl = '{{ event.facebookEventUrl }}';
+                  var marker = addMarker([lat,long],title,category,starttime,startdate,furl,vname,vaddress);
+                  //marker.addTo(map);
+                  cluster.addLayer(marker);
+                  //map.addLayer(marker);
+                  map.addLayer(cluster);
+                  //oms.addMarker(marker);
+              }catch (e){
+                  console.log(e);
+              }
+          {% endfor %}
+    </script>
+    {#{% for i in range(0,latlong|length)%}
+        <script>
+            try {
+                pos = ({{ latlong[i] }});
+                var lat = pos[0];
+                var long = pos[1];
+                console.log([lat,long]);
+                var category = '{{ events[i].category_name }}';
+                var title = '{{ events[i].title }}';
+                var starttime ='{{ events[i].startdate.time() }}';
+                var startdate ='{{ events[i].startdate.date() }}';
+                var vname = '{{ events[i].venueName}}';
+                var vaddress='{{ events[i].venueAddress }}';
+                var furl = '{{ events[i].facebookEventUrl }}';
+                console.log(title);
+                console.log(category);
+                console.log('furl'+ furl);
+                addMarker([lat,long],title,category,starttime,startdate,furl,vname,vaddress);
+        }catch (e){
+                console.log(e);
+            }
+
+        </script>
+    {% endfor %}#}
+    <script>
+        function openNav() {
+          document.getElementById("sidebarSearch").style.width = "20%";
+          document.getElementById("filterEvent").style.marginLeft = "-40%";
+        }
+
+        function closeNav() {
+          document.getElementById("sidebarSearch").style.width = "0";
+          document.getElementById("filterEvent").style.marginLeft= "0";
+        }
+    </script>
+    <script>
+    var starpin = new Icon({iconUrl: 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-28-512.png'});
+        if ('({{ lat_user }})' != 'None') {
+            var lat_user = ({{ lat_user }});
+            var long_user = ({{ long_user }});
+
+            var marker = L.marker([lat_user, long_user]).addTo(map);
+            marker.setIcon(starpin);
+        }
+        if (({{ distance }}) != 'None') {
+            var dist = ({{ distance }});
+            var circle = L.circle([lat_user, long_user], {
+                color: 'grey',
+                fillColor: 'grey',
+                fillOpacity: 0.1,
+                radius: dist
+            }).addTo(map);
+        }
+        map.setView([lat_user,long_user]);
+    </script>
 {% endblock content %}

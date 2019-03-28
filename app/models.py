@@ -91,3 +91,10 @@ class Event(db.Model):
             'facebookEventUrl': self.facebookEventUrl,
             'videoUrl': self.videoUrl
         }
+
+    CATEGORY_CHOICES = [
+        "Concert", "Conference", "Course", "Exhibition", "Family",
+        "Festival", "Lecture", "Literature", "Movies", "Other", "Quiz",
+        "Senior", "Social", "Sport", "Technology", "Theater"
+    ]
+
