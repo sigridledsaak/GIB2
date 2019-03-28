@@ -9,7 +9,6 @@ def delete_old_events():
     delta = datetime + dt.timedelta(days=-1)
     events = db.session.query(Event).filter(Event.startdate <= delta).all()
     for event in events:
-        print(event)
         db.session.delete(event)
     db.session.commit()
 

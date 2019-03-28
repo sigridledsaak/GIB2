@@ -168,7 +168,7 @@ def main(n, m):
 
                 else:
                     print(checkobject.FID)
-                    if int(checkobject.FID) != int(event.FID):
+                    if (int(checkobject.FID) != int(event.FID)) and int(checkobject.FID) < int(event.FID):
                         print('Adding object:', event.FID)
                         db.session.add(event)
                         db.session.commit()
@@ -188,6 +188,5 @@ def main(n, m):
 
 if __name__ == "__main__":
     # calling main function
-
     main(1, 51)
 
