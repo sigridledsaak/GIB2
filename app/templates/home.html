@@ -24,7 +24,7 @@
             <input class="event-textinput" type="date" name="date" placeholder="On Date" />
             <h6>Time </h6>
             <input class="event-textinput" type="time" name="time" placeholder="On Time" />
-            <h6>Select Categories</h6>
+            <h6>Select Category</h6>
             <select class="event-textinput" type="text" name="category" multiple>
                 {% for category in categories %}
                     <option type="checkbox" value="{{ category }}">{{ category }}</option>
@@ -37,7 +37,6 @@
             <h6>Maximum distance (meters)</h6>
             <input class="event-textinput" type="number" name="distance" placeholder="Max distance from your location">
             <br>
-            <p>Velg hvor avstanden skal måles fra</p>
             <input id="pos" class="radio" type="radio" name="pos" value="" onclick="getCurrPosition()"> From your current position<br>
             <input id="markpos" class="radio" type="radio" name="pos" value="" onclick ="getMarkPosition()"> From marked position on map<br>
             <br>
@@ -116,7 +115,7 @@
     {% endfor %}#}
     <script>
         function openNav() {
-          document.getElementById("sidebarSearch").style.width = "20%";
+          document.getElementById("sidebarSearch").style.width = "30%";
           document.getElementById("filterEvent").style.marginLeft = "-40%";
         }
 
