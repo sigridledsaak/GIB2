@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
     <script src='static/leaflet.js'></script>
@@ -48,18 +51,19 @@
     </div>
 
     <script type="text/javascript">
-      var options = {  //**spiderfier
-        keepSpiderfied: true,
-      };
-      var oms = new OverlappingMarkerSpiderfier(map, options);
+        var options = {  //**spiderfier
+            keepSpiderfied: true,
+        };
+        var cluster = L.markerClusterGroup();
+        var oms = new OverlappingMarkerSpiderfier(map, options);
 
-      var geocoder = L.Control.geocoder({
-              defaultMarkGeocode: false
-          }).on('markgeocode', function(e) {
+        var geocoder = L.Control.geocoder({
+            defaultMarkGeocode: false
+            }).on('markgeocode', function(e) {
               var bbox = e.geocode.bbox;
               map.fitBounds(e.geocode.bbox);
-          })
-          .addTo(map);
+            })
+            .addTo(map);
 
           {% for event, cords in events_latlong %}
               try {
@@ -76,9 +80,11 @@
                   var vaddress='{{ event.venueAddress }}';
                   var furl = '{{ event.facebookEventUrl }}';
                   var marker = addMarker([lat,long],title,category,starttime,startdate,furl,vname,vaddress);
-                  marker.addTo(map);
-                  map.addLayer(marker);
-                  oms.addMarker(marker);
+                  //marker.addTo(map);
+                  cluster.addLayer(marker);
+                  //map.addLayer(marker);
+                  map.addLayer(cluster);
+                  //oms.addMarker(marker);
               }catch (e){
                   console.log(e);
               }
