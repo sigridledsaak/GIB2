@@ -136,7 +136,7 @@ def create_empytevent():
     return newEvent
 
 
-def adresstocoordinates(adress):  # adress is string
+def adresstocoordinates(adress):  #adress is string
     geolocator = Nominatim(user_agent="kan det staa hva som helst??")
     location = geolocator.geocode(adress)
     return (location.latitude, location.longitude)
