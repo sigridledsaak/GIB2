@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
     <script src='static/leaflet.js'></script>
     <div class="row">
         <div class="col-12">
@@ -43,7 +46,45 @@
             <p></p>
         </form>
     </div>
-    {% for i in range(0,latlong|length)%}
+
+    <script type="text/javascript">
+      var options = {  //**spiderfier
+        keepSpiderfied: true,
+      };
+      var oms = new OverlappingMarkerSpiderfier(map, options);
+
+      var geocoder = L.Control.geocoder({
+              defaultMarkGeocode: false
+          }).on('markgeocode', function(e) {
+              var bbox = e.geocode.bbox;
+              map.fitBounds(e.geocode.bbox);
+          })
+          .addTo(map);
+
+          {% for event, cords in events_latlong %}
+              try {
+                  var cord = {{ cords }}
+                  pos = ({{ cords }});
+                  var lat = pos[0];
+                  var long = pos[1];
+                  console.log([lat,long]);
+                  var category = '{{ event.category_name }}';
+                  var title = '{{ event.title }}';
+                  var starttime ='{{ event.startdate.time() }}';
+                  var startdate ='{{ event.startdate.date() }}';
+                  var vname = '{{ event.venueName}}';
+                  var vaddress='{{ event.venueAddress }}';
+                  var furl = '{{ event.facebookEventUrl }}';
+                  var marker = addMarker([lat,long],title,category,starttime,startdate,furl,vname,vaddress);
+                  marker.addTo(map);
+                  map.addLayer(marker);
+                  oms.addMarker(marker);
+              }catch (e){
+                  console.log(e);
+              }
+          {% endfor %}
+    </script>
+    {#{% for i in range(0,latlong|length)%}
         <script>
             try {
                 pos = ({{ latlong[i] }});
@@ -66,7 +107,7 @@
             }
 
         </script>
-    {% endfor %}
+    {% endfor %}#}
     <script>
         function openNav() {
           document.getElementById("sidebarSearch").style.width = "400px";

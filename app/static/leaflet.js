@@ -187,7 +187,7 @@ function addMarker(pos,title,category,starttime,startdate,furl,vname,vaddress) {
         default:
             icon= null;
     }
-    var currentMarker = L.marker(pos).addTo(map);
+    var currentMarker = L.marker(pos);
     if (icon!=null)
         currentMarker.setIcon(icon);
     var popup = ('<h5>'+title+'</h5><p>'+starttime+', '+ startdate+'</p><p>'+category+'</p> <p>'+vname+', '+vaddress+' </p>  ');
@@ -198,5 +198,6 @@ function addMarker(pos,title,category,starttime,startdate,furl,vname,vaddress) {
     currentMarker.on('click', function (ev) {
          ev.target.openPopup();
      });
+    return currentMarker;
 }
 

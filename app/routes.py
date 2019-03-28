@@ -44,7 +44,9 @@ def home():
                 except:
                     defaultCords.append('None')
             else :
-                defaultCords.append('None')
+                std = [0, 0]
+                defaultCords.append(std)
+
 
     if request.method == 'POST':
         #Get user input from form
@@ -55,10 +57,10 @@ def home():
         ageLimit = request.form.get('ageLimit')
         pos = request.form.get('pos')
         distance = request.form.get('distance')
+        lat = 0
+        long = 0
 
-        lat_user, long_user = float(pos.split(',')[0]), float(pos.split(',')[1])
         filters = []
-
 
         if date and time:
             date = dt.datetime.strptime(date, "%Y-%m-%d").date()
@@ -73,6 +75,8 @@ def home():
             filters.append(Event.category_name == category)
         if ticketPrize:
             filters.append(Event.regularPrice < ticketPrize)
+        if pos:
+            lat, long = float(pos.split(',')[0]), float(pos.split(',')[1])
         if pos and distance:
             user_point = WKTElement('POINT({} {})'.format(pos.split(',')[1],pos.split(',')[0]))
             filters.append(ga.ST_Distance(Event.venueCoordinates, user_point) <= distance)
@@ -80,7 +84,6 @@ def home():
         events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate,
                                   Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,
                                   Event.venueAddress).filter(and_(*filters)).all()
-
 
         cords = []
         for event in events:
@@ -92,10 +95,12 @@ def home():
                     c = adresstocoordinates((event.venueAddress))
                     cords.append(c)
                 else :
-                    cords.append('None')
+                    std = [0, 0]
+                    cords.append(std)
 
-        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=events, latlong=cords,lat_user = lat_user, long_user = long_user, distance = distance)
-    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events=defaultEvents, latlong=defaultCords)
+
+        return render_template('home.html', categories=Event.CATEGORY_CHOICES, events_latlong=zip(events,cords), lat_user=lat, long_user=long, distance = distance)
+    return render_template('home.html', categories=Event.CATEGORY_CHOICES, events_latlong=zip(defaultEvents, defaultCords))
 
 
 
