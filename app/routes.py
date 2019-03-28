@@ -69,6 +69,10 @@ def home():
             delta = datetime + dt.timedelta(days=1)
             filters.append(Event.startdate >= datetime)
             filters.append(Event.startdate <= delta)
+        if not date and not time:
+            filters.append(Event.startdate >= dt.datetime.now())
+            filters.append(Event.startdate <= dt.datetime.now()+ dt.timedelta(days=1))
+
         if ageLimit:
             filters.append(or_(Event.ageRestriction < ageLimit, Event.ageRestriction == None))
         if category:
@@ -131,6 +135,7 @@ def addfieldstoemptyevent(event):
     event.FID = 0
     event.description = request.form.get('description')
     event.venueName = request.form.get('venueName')
+    event.facebookEventUrl = ''
     event.venueAddress = request.form.get('venueAddress')
     print('category: ', request.form.get('category'))
     event.category_name = request.form.get('category')
