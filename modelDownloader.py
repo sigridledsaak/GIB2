@@ -189,5 +189,5 @@ def main(n, m):
 if __name__ == "__main__":
     # calling main function
 
-    main(1, 15)
+    main(1, 51)
 

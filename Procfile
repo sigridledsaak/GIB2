@@ -1,2 +1,3 @@
 web: gunicorn app:app
-worker: python modelDownloader.py
+updateworker: python modelDownloader.py
+deleteworker: python modelDeleter.py
