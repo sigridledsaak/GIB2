@@ -15,21 +15,20 @@ function setMap(){
 }
 
 var map;
+var marker = L.marker();
 try {
     this.map = setMap();
 }catch(e){
     this.map = map;
 }
 window.onload=map;
-var marker = L.marker();
-var clickcount=0;
 
 var Icon = L.Icon.extend({
     options: {
         iconUrl: 'https://cdn2.iconfinder.com/data/icons/location-map-simplicity/512/theatre-512.png',
-        iconSize:     [28, 38],
-        iconAnchor:   [18, 44],
-        popupAnchor: [-4, -40]
+        iconSize:     [28, 30],
+        iconAnchor:   [15, 30],
+        popupAnchor: [0, -25]
     }
 });
 //bruk disse markerene så får me alle i samme størrelse og format.
@@ -44,7 +43,7 @@ var outdoorpin=new Icon({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-l
 var exhitionpin=new Icon({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-13-512.png'});
 var technologypin = new Icon ({iconUrl:'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-23-512.png'});
 var foodpin = new Icon ({iconUrl : 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-19-256.png'});
-var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[45,55], popupAnchor:[3,-33]});
+var sportpin = new Icon({iconUrl : 'https://cdn4.iconfinder.com/data/icons/soccer-american-football/100/f-11-512.png',iconSize :[45,45], popupAnchor:[3,-33]});
 var personpin=new Icon({iconUrl:'https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-5/128/map-location-person-512.png', iconSize : [50,40]});
 var moviepin = new Icon({iconUrl: 'https://cdn2.iconfinder.com/data/icons/map-locations-filled-pixel-perfect/64/pin-map-location-02-512.png'});
 
@@ -100,7 +99,7 @@ function getMarkPosition(){
         console.log(pos);
         marker.setLatLng(e.latlng).addTo(map);
         marker.setIcon(starpin);
-        marker.bindPopup("<strong>Marked position!'</strong>").addTo(map);
+        marker.bindPopup("<strong>Marked position!</strong>").addTo(map);
         //circle = makeRadius(e.latlng, 500);
         //circle.addTo(map);
         marker.on('dragend', markerDrag=false);

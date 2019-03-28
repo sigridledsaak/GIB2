@@ -38,8 +38,11 @@ def home():
             defaultCords.append(coord)
         else:
             if event.venueAddress is not None:
-                c = adresstocoordinates((event.venueAddress))
-                defaultCords.append(c)
+                try :
+                    c = adresstocoordinates((event.venueAddress))
+                    defaultCords.append(c)
+                except:
+                    defaultCords.append('None')
             else :
                 defaultCords.append('None')
 
