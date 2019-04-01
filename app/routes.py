@@ -25,7 +25,7 @@ def home():
         return [lat, long]
 
     datetime = dt.datetime.now()
-    delta = datetime + dt.timedelta(days=4)
+    delta = datetime + dt.timedelta(days=3)
 
     defaultEvents = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate, Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,Event.venueAddress)\
                 .filter(Event.startdate >= datetime, Event.startdate <= delta)
@@ -71,23 +71,38 @@ def home():
             filters.append(Event.startdate <= delta)
         if not date and not time:
             filters.append(Event.startdate >= dt.datetime.now())
-            filters.append(Event.startdate <= dt.datetime.now()+ dt.timedelta(days=1))
-
+            filters.append(Event.startdate <= dt.datetime.now() + dt.timedelta(days=3))
+        if date and not time:
+            date = dt.datetime.strptime(date, "%Y-%m-%d").date()
+            time = dt.datetime.now().time()
+            datetime = dt.datetime.combine(date, time)
+            filters.append(Event.startdate >= datetime)
+            filters.append(Event.startdate <= datetime + dt.timedelta(days=1))
+        if time and not date:
+            date = dt.datetime.now().date()
+            time = dt.datetime.strptime(time, "%H:%M").time()
+            datetime = dt.datetime.combine(date, time)
+            filters.append(Event.startdate >= datetime)
+            filters.append(Event.startdate <= datetime + dt.timedelta(days=3))
         if ageLimit:
             filters.append(or_(Event.ageRestriction < ageLimit, Event.ageRestriction == None))
         if category:
             filters.append(Event.category_name == category)
         if ticketPrize:
-            filters.append(Event.regularPrice < ticketPrize)
+            filters.append(or_(Event.regularPrice < ticketPrize, Event.regularPrice == None))
         if pos:
             lat, long = float(pos.split(',')[0]), float(pos.split(',')[1])
         if pos and distance:
             user_point = WKTElement('POINT({} {})'.format(pos.split(',')[1],pos.split(',')[0]))
             filters.append(ga.ST_Distance(Event.venueCoordinates, user_point) <= distance)
+        if distance and not pos:
+            lat, long = 63.430370, 10.395032
+            default_point = WKTElement('POINT(10.395032 63.430370)')
+            filters.append(ga.ST_Distance(Event.venueCoordinates, default_point) <= distance)
 
         events = db.session.query(Event.title, Event.ageRestriction, Event.category_name, Event.startdate,
                                   Event.venueCoordinates,Event.facebookEventUrl,Event.venueName,
-                                  Event.venueAddress).filter(and_(*filters)).all()
+                                  Event.venueAddress, Event.regularPrice).filter(and_(*filters)).all()
 
         cords = []
         for event in events:
@@ -98,7 +113,7 @@ def home():
                 if event.venueAddress is not None:
                     c = adresstocoordinates((event.venueAddress))
                     cords.append(c)
-                else :
+                else:
                     std = [0, 0]
                     cords.append(std)
 
