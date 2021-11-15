@@ -15,7 +15,7 @@ WTForms==2.2.1
 Werkzeug==0.14.1
 alembic==1.0.7
 itsdangerous==1.1.0
-pip==19.0.1
+pip==21.1
 ppygis3==0.4
 psycopg2==2.7.7
 python-dateutil==2.8.0
